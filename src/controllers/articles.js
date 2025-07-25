@@ -1,7 +1,13 @@
 // src/controllers/articles.js
 
 import createHttpError from 'http-errors';
-import { getAllArticles, getArticleById } from '../services/articles.js';
+import {
+  createArticle,
+  deleteArlicle,
+  getAllArticles,
+  getArticleById,
+	updateArticle,
+} from '../services/articles.js';
 
 export const getArticlesController = async (req, res, next) => {
   const articles = await getAllArticles();
@@ -13,20 +19,53 @@ export const getArticlesController = async (req, res, next) => {
 };
 
 export const getArticleByIdController = async (req, res, next) => {
-	const {articleId}  = req.params;
-	const article = await getArticleById(articleId);
+  const { articleId } = req.params;
+  const article = await getArticleById(articleId);
+
+  if (!article) {
+    throw createHttpError(404, 'Article not found');
+  }
+
+  res.json({
+    status: 200,
+    message: `Successfully found article!`,
+    data: article,
+  });
+};
+
+export const createArticleController = async (req, res) => {
+  const article = await createArticle(req.body);
+
+  res.json({
+    status: 201,
+    message: `Successfully created an article!`,
+    data: article,
+  });
+};
+
+export const patchArticleController = async (req, res) => {
+	const {articleId} = req.params;
+	const result = await updateArticle(articleId, req.body);
+
+	if (!result) {
+		throw createHttpError(404, 'Article not found');
+	}
+
+	res.json({
+		status: 200,
+		message: `Successfully patched an article`,
+		data: result.article,
+	});
+};
+
+export const deleteArticleController = async (req, res) => {
+  const { articleId } = req.params;
+
+	const article = await deleteArlicle(articleId);
 
 	if (!article) {
 		throw createHttpError(404, 'Article not found');
 	}
 
-	res.json({
-		status:200,
-		message: `Successfully found article!`,
-		data: article,
-	});
-};
-
-export const createArticleController = async (req, res) => {
-
+	res.status(204).send();
 };
