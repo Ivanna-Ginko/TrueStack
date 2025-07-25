@@ -22,6 +22,10 @@ const UserSchema = new Schema({
     type: Number,
     default: null,
   },
+  savedArticles: {
+  type: Number,
+  default: null,
+  },
 });
 
 UserSchema.methods.toJSON = function () {

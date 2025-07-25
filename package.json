@@ -25,9 +25,12 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
+    "formik": "^2.4.6",
     "http-errors": "^2.0.0",
     "joi": "^17.13.3",
     "mongoose": "^8.16.4",
-    "pino-http": "^10.5.0"
+    "pino-http": "^10.5.0",
+    "react-datepicker": "^8.4.0",
+    "react-loader-spinner": "^6.1.6"
   }
 }
