@@ -1,7 +1,10 @@
 import { Router } from 'express';
-import { getArticlesController } from '../controllers/articles.js';
+
 import { registerUserSchema } from '../validation/auth.js';
 import { registerUserController } from '../controllers/auth.js';
+
+import { loginUserSchema } from '../validation/auth.js';
+import { loginUserController } from '../controllers/auth.js';
 
 import { validateBody } from '../middlewares/validateBody.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
@@ -13,8 +16,14 @@ router.post(
   validateBody(registerUserSchema),
   ctrlWrapper(registerUserController),
 );
-router.post('/login', getArticlesController);
-router.post('/logout', getArticlesController);
-router.post('/refresh', getArticlesController);
+
+router.post(
+  '/login',
+  validateBody(loginUserSchema),
+  ctrlWrapper(loginUserController),
+);
+
+// router.post('/logout', getArticlesController);
+// router.post('/refresh', getArticlesController);
 
 export default router;

@@ -4,7 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { getEnvVar } from './utils/getEnvVar.js';
 import router from './routers/index.js';
-
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
@@ -15,8 +15,9 @@ export const startServer = () => {
 
   app.use(express.json());
   app.use(cors());
+  app.use(cookieParser());
 
- app.use(
+  app.use(
     pino({
       transport: {
         target: 'pino-pretty',
@@ -32,13 +33,12 @@ export const startServer = () => {
 
   app.use(router);
 
-
   //app.get('/articles', async (req, res) => {
-   // const articles = await getAllArticles();
+  // const articles = await getAllArticles();
 
-    //res.status(200).json({
-    //  data: articles,
-   // });
+  //res.status(200).json({
+  //  data: articles,
+  // });
   //});
 
   app.use('', (req, res, next) => {
@@ -57,7 +57,4 @@ export const startServer = () => {
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
-
-
 };
-
