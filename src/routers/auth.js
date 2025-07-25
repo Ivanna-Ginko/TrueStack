@@ -1,12 +1,29 @@
 import { Router } from 'express';
-import { getArticlesController } from '../controllers/articles.js';
 
-const authRouter = Router();
+import { registerUserSchema } from '../validation/auth.js';
+import { registerUserController } from '../controllers/auth.js';
 
-authRouter.post( '/register', getArticlesController);
-authRouter.post( '/login', getArticlesController);
-authRouter.post('/logout', getArticlesController);
-authRouter.post('/refresh', getArticlesController);
+import { loginUserSchema } from '../validation/auth.js';
+import { loginUserController } from '../controllers/auth.js';
 
+import { validateBody } from '../middlewares/validateBody.js';
+import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 
-export default authRouter;
+const router = Router();
+
+router.post(
+  '/register',
+  validateBody(registerUserSchema),
+  ctrlWrapper(registerUserController),
+);
+
+router.post(
+  '/login',
+  validateBody(loginUserSchema),
+  ctrlWrapper(loginUserController),
+);
+
+// router.post('/logout', getArticlesController);
+// router.post('/refresh', getArticlesController);
+
+export default router;
