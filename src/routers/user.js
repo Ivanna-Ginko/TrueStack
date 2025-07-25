@@ -1,16 +1,13 @@
-import { Router } from "express";
-import { getArticlesController } from "../controllers/articles.js";
-
+import { Router } from 'express';
+import {
+  getUserByIdController,
+  getUsersController,
+} from '../controllers/user.js';
 
 const router = Router();
 
-router.get('/', getArticlesController);
-router.get('/favouritearticles', getArticlesController);
-router.get('/postedarticles', getArticlesController);
-router.put('/savearticle', getArticlesController);
-router.delete('/deletefavourite', getArticlesController);
+router.get('/users', getUsersController);
 
-
-
+router.get('/users/:userId', getUserByIdController);
 
 export default router;
