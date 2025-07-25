@@ -5,6 +5,15 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
   avatar: {
     type: String,
     default: null,
@@ -15,4 +24,10 @@ const UserSchema = new Schema({
   },
 });
 
-module.exports = model('User', UserSchema);
+UserSchema.methods.toJSON = function () {
+  const obj = this.toObject();
+  delete obj.password;
+  return obj;
+};
+
+export const usersCollection = model('User', UserSchema);
