@@ -1,4 +1,5 @@
-import { getAllUsers, getUserById } from '../services/users';
+import { getAllUsers, getUserById } from '../services/users.js';
+import createHttpError from 'http-errors';
 
 export const getUsersController = async (req, res, next) => {
   const users = await getAllUsers();
@@ -15,10 +16,7 @@ export const getUserByIdController = async (req, res, next) => {
   const user = await getUserById(userId);
 
   if (!user) {
-    res.status(404).json({
-      message: 'User not found',
-    });
-    return;
+    throw createHttpError(404, 'User not found');
   }
 
   res.json({
