@@ -5,6 +5,8 @@ import { createArticleSchema, updateArticleSchema } from '../validation/articles
 import { validateBody } from "../middlewares/validateBody.js";
 import { isValidIdArticles } from '../middlewares/isValidIdArticles.js';
 import { authenticate } from '../middlewares/authenticate.js';
+import { addPageArticle } from "../middlewares/multer.js";
+import { prepareImageUrl } from '../middlewares/prepareImageUrl.js';
 
 
 
@@ -22,6 +24,8 @@ router.get(
 router.post(
 	'/',
 	authenticate,
+	addPageArticle,
+	prepareImageUrl,
 	validateBody(createArticleSchema),
 	ctrlWrapper(createArticleController)
 );
@@ -29,6 +33,8 @@ router.patch(
 	'/:articleId',
 	isValidIdArticles,
 	authenticate,
+	addPageArticle,
+	prepareImageUrl,
 	validateBody(updateArticleSchema),
 	ctrlWrapper(patchArticleController)
 );

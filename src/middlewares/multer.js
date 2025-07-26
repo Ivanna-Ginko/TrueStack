@@ -15,3 +15,8 @@ export const addAvatar = multer({
   storage,
   limits: { fileSize: 1024 * 1024 },
 }).single('avatar');
+
+export const addPageArticle = multer({
+  storage,
+  limits: {fileSize: 1024 * 1024},
+}).single('img');

@@ -10,18 +10,21 @@ import {
 } from '../services/articles.js';
 import { parsePaginationParamsArt } from '../utils/parsePaginationParamsArt.js';
 import { parseSortParamsArt } from '../utils/parseSortParamsArt.js';
+import { parseFilterParamsArt } from '../utils/parseFilterParamsArt.js';
+// import { UsersCollection } from '../db/models/user.js';
 
 export const getArticlesController = async (req, res, next) => {
   const { page, perPage } = parsePaginationParamsArt(req.query);
-
-	const {sortOrder, sortBy} = parseSortParamsArt(req.query);
+  const { sortOrder, sortBy } = parseSortParamsArt(req.query);
+  const filter = parseFilterParamsArt(req.query);
 
   const articles = await getAllArticles({
-		page,
-		perPage,
-		sortBy,
-		sortOrder,
-	});
+    page,
+    perPage,
+    sortBy,
+    sortOrder,
+    filter,
+  });
 
   res.json({
     status: 200,
@@ -46,9 +49,15 @@ export const getArticleByIdController = async (req, res, next) => {
 };
 
 export const createArticleController = async (req, res) => {
-  const article = await createArticle(req.body);
+  const ownerId = req.user._id;
 
-  res.json({
+  const article = await createArticle({ ...req.body }, ownerId);
+
+  // await UsersCollection.findByIdAndUpdate(ownerId, {
+  // 	$inc: {articlesAmount: +1},
+  // });
+
+  res.status(201).json({
     status: 201,
     message: `Successfully created an article!`,
     data: article,
@@ -57,7 +66,13 @@ export const createArticleController = async (req, res) => {
 
 export const patchArticleController = async (req, res) => {
   const { articleId } = req.params;
-  const result = await updateArticle(articleId, req.body);
+
+
+  const result = await updateArticle(
+    articleId,
+    { ...req.body },
+    req.user._id,
+  );
 
   if (!result) {
     throw createHttpError(404, 'Article not found');
@@ -72,8 +87,9 @@ export const patchArticleController = async (req, res) => {
 
 export const deleteArticleController = async (req, res) => {
   const { articleId } = req.params;
+  const ownerId = req.user._id;
 
-  const article = await deleteArlicle(articleId);
+  const article = await deleteArlicle(articleId, ownerId);
 
   if (!article) {
     throw createHttpError(404, 'Article not found');

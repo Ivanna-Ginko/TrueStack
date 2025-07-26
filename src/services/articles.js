@@ -7,11 +7,12 @@ export const getAllArticles = async ({
   perPage = 12,
   sortOrder = SORT_ORDER_ART.DESC,
   sortBy = 'createdAt',
+  filter = {},
 }) => {
   const limit = perPage;
   const skip = (page - 1) * perPage;
 
-  const articlesQuery = ArticlesCollection.find();
+  const articlesQuery = ArticlesCollection.find(filter);
   const articlesCount = await ArticlesCollection.find()
     .merge(articlesQuery)
     .countDocuments();
@@ -36,14 +37,14 @@ export const getArticleById = async (articleId) => {
 };
 
 // далі приватні
-export const createArticle = async (payload) => {
-  const article = await ArticlesCollection.create(payload);
+export const createArticle = async (payload, ownerId) => {
+  const article = await ArticlesCollection.create({ ...payload, ownerId });
   return article;
 };
 
-export const updateArticle = async (articleId, payload) => {
+export const updateArticle = async (articleId, payload, ownerId) => {
   const rawResult = await ArticlesCollection.findOneAndUpdate(
-    { _id: articleId },
+    { _id: articleId, ownerId },
     payload,
     {
       new: true,
@@ -59,9 +60,10 @@ export const updateArticle = async (articleId, payload) => {
   };
 };
 
-export const deleteArlicle = async (articleId) => {
+export const deleteArlicle = async (articleId, ownerId) => {
   const article = await ArticlesCollection.findOneAndDelete({
     _id: articleId,
+    ownerId,
   });
   return article;
 };
@@ -76,4 +78,3 @@ export const updateRate = async (articleId, delta) => {
 
 // await updateRate(articleId, +1); // при збереженні
 // await updateRate(articleId, -1); // при видаленні збереження
-

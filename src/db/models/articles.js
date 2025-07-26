@@ -25,7 +25,7 @@ const articlesSchema = new Schema(
     },
     ownerId: {
       type: Schema.Types.ObjectId,
-      ref: 'Users',
+      ref: 'User',
     },
     date: {
       type: Date,
