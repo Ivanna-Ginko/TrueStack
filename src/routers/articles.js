@@ -3,7 +3,7 @@ import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { createArticleController, deleteArticleController, getArticleByIdController, getArticlesController, patchArticleController } from '../controllers/articles.js';
 import { createArticleSchema, updateArticleSchema } from '../validation/articles.js';
 import { validateBody } from "../middlewares/validateBody.js";
-import { isValidId } from '../middlewares/isValidId.js';
+import { isValidIdArticles } from '../middlewares/isValidIdArticles.js';
 
 const router = Router();
 
@@ -13,7 +13,7 @@ router.get(
 );
 router.get(
 	'/:articleId',
-	isValidId,
+	isValidIdArticles,
 	ctrlWrapper(getArticleByIdController)
 );
 router.post(
@@ -23,13 +23,13 @@ router.post(
 );
 router.patch(
 	'/:articleId',
-	isValidId,
+	isValidIdArticles,
 	validateBody(updateArticleSchema),
 	ctrlWrapper(patchArticleController)
 );
 router.delete(
 	'/:articleId',
-	isValidId,
+	isValidIdArticles,
 	ctrlWrapper(deleteArticleController)
 );
 
