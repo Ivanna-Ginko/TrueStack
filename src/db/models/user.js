@@ -23,8 +23,8 @@ const UserSchema = new Schema({
     default: null,
   },
   savedArticles: {
-  type: Number,
-  default: null,
+    type: Number,
+    default: null,
   },
 });
 
@@ -34,4 +34,4 @@ UserSchema.methods.toJSON = function () {
   return obj;
 };
 
-export const usersCollection = model('User', UserSchema);
+export const UsersCollection = model('User', UserSchema);
