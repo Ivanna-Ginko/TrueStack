@@ -8,11 +8,14 @@ export const SORT_ORDER = {
   DESC: 'desc',
 };
 export const TEMP_UPLOAD_DIR = path.join(process.cwd(), 'temp');
+export const UPLOAD_DIR = path.join(process.cwd(), 'uploads');
 
 export const CLOUDINARY = {
   CLOUD_NAME: 'CLOUD_NAME',
   API_KEY: 'API_KEY',
   API_SECRET: 'API_SECRET',
 };
+
+export const ENABLE_CLOUDINARY = 'ENABLE_CLOUDINARY';
 
 export const SWAGGER_PATH = path.join(process.cwd(), 'docs', 'swagger.json');
