@@ -19,7 +19,7 @@ export const getUsersController = async (req, res, next) => {
 };
 
 export const getUserByIdController = async (req, res, next) => {
-  const { userId } = req.params;
+  const { _id: userId } = req.params;
   const user = await getUserById(userId);
 
   if (!user) {
@@ -34,7 +34,8 @@ export const getUserByIdController = async (req, res, next) => {
 };
 
 export const getSavedArticlesOfUserController = async (req, res, next) => {
-  const { _id: userId } = req.user;
+  // const { _id: userId } = req.user;
+  const userId = '6881563901add19ee16fcff2';
 
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query);
@@ -48,6 +49,10 @@ export const getSavedArticlesOfUserController = async (req, res, next) => {
     sortOrder,
     filter,
   });
+
+  if (result === null) {
+    return res.status(404).json({ message: ' User not found' });
+  }
 
   res.json({
     status: 200,

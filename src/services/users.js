@@ -26,26 +26,26 @@ export const getSavedArticlesOfUser = async ({
   if (!user) return null;
 
   const articleIds = user.savedArticles;
+  if (!articleIds?.length) {
+    return { items: [], ...calculatePaginationData(0, perPage, page) };
+}
 
   const articlesQuery = ArticlesCollection.find({ _id: { $in: articleIds } });
 
   if (filter.category) {
     articlesQuery.where('category').equals(filter.category);
   }
-  if (filter.name) {
-    articlesQuery.where('name').regex(new RegExp(filter.name, 'i'));
-  }
-  if (filter.title) {
+    if (filter.title) {
     articlesQuery.where('title').regex(new RegExp(filter.title, 'i'));
   }
 
   const [total, items] = await Promise.all([
-    ArticlesCollection.find().merge(articlesQuery).countDocuments(),
+    ArticlesCollection.countDocuments(articlesQuery.getFilter()),
     articlesQuery
       .sort({ [sortBy]: sortOrder === 'asc' ? 1 : -1 })
       .skip(skip)
       .limit(perPage)
-      .select('title name img category')
+      .select('title img category author')
       .lean(),
   ]);
 
