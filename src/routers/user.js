@@ -13,6 +13,9 @@ router.get('/', ctrlWrapper(getUsersController));
 
 router.get('/:userId', isValidId, ctrlWrapper(getUserByIdController));
 
-router.get('/my-articles', ctrlWrapper(getCreatedArticlesOfUserController));
+router.get(
+  '/created-articles',
+  ctrlWrapper(getCreatedArticlesOfUserController),
+);
 
 export default router;

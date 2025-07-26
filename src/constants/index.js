@@ -15,3 +15,8 @@ export const CLOUDINARY = {
 export const ENABLE_CLOUDINARY = 'ENABLE_CLOUDINARY';
 
 export const SWAGGER_PATH = path.join(process.cwd(), 'docs', 'swagger.json');
+
+export const SORT_ORDER = {
+  ASC: 'asc',
+  DESC: 'desc',
+};
