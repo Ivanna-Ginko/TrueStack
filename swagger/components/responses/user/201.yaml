@@ -1,0 +1,53 @@
+description: Successful registration of a new user
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - status
+        - message
+        - data
+      properties:
+        status:
+          type: integer
+          example: 201
+        message:
+          type: string
+          example: Successfully registered a user!
+        data:
+          type: object
+          required:
+            - _id
+            - name
+            - email
+            - createdAt
+            - updatedAt
+          properties:
+            _id:
+              type: string
+              example: '65ca67e7ae7f10c88b598384'
+              description: User ID
+            name:
+              type: string
+              example: 'John'
+              description: User's name
+            email:
+              type: string
+              format: email
+              example: 'john12345@gmail.com'
+              description: User's email
+            avatar:
+              type: string
+              format: uri
+              example: 'https://res.cloudinary.com/dgce49ndc/image/upload/v1752447915/ar3ps6z0sbxexlj7spgg'
+              description: URL to user's avatar image
+            createdAt:
+              type: string
+              format: date-time
+              example: 2025-07-26T12:18:02.095Z
+              description: User creation date
+            updatedAt:
+              type: string
+              format: date-time
+              example: 2025-07-26T12:18:02.095Z
+              description: User update date

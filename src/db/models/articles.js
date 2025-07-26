@@ -38,4 +38,4 @@ const articlesSchema = new Schema(
   },
 );
 
-export const ArticlesCollection = model('Articles', articlesSchema);
+export const ArticlesCollection = model('Article', articlesSchema);
