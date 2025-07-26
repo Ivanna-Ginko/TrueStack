@@ -22,10 +22,12 @@ const UserSchema = new Schema({
     type: Number,
     default: null,
   },
-  savedArticles: {
-    type: Number,
-    default: null,
-  },
+  savedArticles: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Article',
+    },
+  ],
 });
 
 UserSchema.methods.toJSON = function () {
