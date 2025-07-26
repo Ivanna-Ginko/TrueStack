@@ -6,11 +6,23 @@ import {
   deleteArlicle,
   getAllArticles,
   getArticleById,
-	updateArticle,
+  updateArticle,
 } from '../services/articles.js';
+import { parsePaginationParamsArt } from '../utils/parsePaginationParamsArt.js';
+import { parseSortParamsArt } from '../utils/parseSortParamsArt.js';
 
 export const getArticlesController = async (req, res, next) => {
-  const articles = await getAllArticles();
+  const { page, perPage } = parsePaginationParamsArt(req.query);
+
+	const {sortOrder, sortBy} = parseSortParamsArt(req.query);
+
+  const articles = await getAllArticles({
+		page,
+		perPage,
+		sortBy,
+		sortOrder,
+	});
+
   res.json({
     status: 200,
     message: 'Successfully found articles!',
@@ -44,28 +56,28 @@ export const createArticleController = async (req, res) => {
 };
 
 export const patchArticleController = async (req, res) => {
-	const {articleId} = req.params;
-	const result = await updateArticle(articleId, req.body);
+  const { articleId } = req.params;
+  const result = await updateArticle(articleId, req.body);
 
-	if (!result) {
-		throw createHttpError(404, 'Article not found');
-	}
+  if (!result) {
+    throw createHttpError(404, 'Article not found');
+  }
 
-	res.json({
-		status: 200,
-		message: `Successfully patched an article`,
-		data: result.article,
-	});
+  res.json({
+    status: 200,
+    message: `Successfully patched an article`,
+    data: result.article,
+  });
 };
 
 export const deleteArticleController = async (req, res) => {
   const { articleId } = req.params;
 
-	const article = await deleteArlicle(articleId);
+  const article = await deleteArlicle(articleId);
 
-	if (!article) {
-		throw createHttpError(404, 'Article not found');
-	}
+  if (!article) {
+    throw createHttpError(404, 'Article not found');
+  }
 
-	res.status(204).send();
+  res.status(204).send();
 };
