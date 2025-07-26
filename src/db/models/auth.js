@@ -11,3 +11,5 @@ const usersSchema = new Schema(
 
 
 export const UsersCollection = model('users', usersSchema);
+
+//чекаємо відповідь ментора, чи використовувати таку модель
