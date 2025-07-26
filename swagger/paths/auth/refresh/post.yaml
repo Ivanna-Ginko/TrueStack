@@ -22,7 +22,7 @@ responses:
               example: 200
             message:
               type: string
-              example: Successfully refreshed a session!
+              example: 'Successfully refreshed a session!'
             data:
               type: object
               required:
@@ -30,6 +30,6 @@ responses:
               properties:
                 accessToken:
                   type: string
-                  example: Y/ja2tZ1abSAnC/lEJRiutLgz9vAnsD0r/qe6Dcb
+                  example: 'WVn+tAb/RgXdlZpPh/J2JKAT5hDuYf3kBYS/a4aa'
   '401':
     $ref: '../../../components/responses/401.yaml'
