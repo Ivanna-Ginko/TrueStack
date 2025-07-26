@@ -9,6 +9,7 @@ import cookieParser from 'cookie-parser';
 
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandler } from './middlewares/errorHandler.js';
+import { swaggerDocs } from './middlewares/swaggerDocs.js';
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ export const startServer = () => {
     });
   });
 
+  app.use('/api-docs', swaggerDocs());
   app.use(router);
 
   //app.get('/articles', async (req, res) => {

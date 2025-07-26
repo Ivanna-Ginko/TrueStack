@@ -1,11 +1,11 @@
-import { usersCollection } from '../db/models/users.js';
+import { UsersCollection } from '../db/models/user.js';
 
 export const getAllUsers = async () => {
-  const users = await usersCollection.find();
+  const users = await UsersCollection.find();
   return users;
 };
 
 export const getUserById = async (userId) => {
-  const user = await usersCollection.findById(userId);
+  const user = await UsersCollection.findById(userId);
   return user;
 };

@@ -47,3 +47,5 @@ responses:
                   example: 'M1EiD54qm+x+1+CsC00DpDhukXd1pJaJGYGX0iMv'
   '401':
     $ref: '../../../components/responses/401.yaml'
+  '404':
+    $ref: '../../../components/responses/user/404.yaml'
