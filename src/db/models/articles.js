@@ -1,46 +1,41 @@
 import { Schema, model } from 'mongoose';
 
-
 const ArticleSchema = new Schema({
   id: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   img: {
     type: String,
-    default: ''
+    default: '',
   },
-   userId: {
+  userId: {
     type: Schema.Types.ObjectId,
-    ref: 'Users'
+    ref: 'Users',
   },
   name: {
     type: String,
-    required: true // автор
+    required: true, // автор
   },
 
   title: {
     type: String,
-    required: true
+    required: true,
   },
   desc: {
     type: String,
-    default: ''
+    default: '',
   },
   article: {
     type: String,
-    required: true
+    required: true,
   },
   category: {
     type: String,
     enum: ['popular', 'general'],
-    default: 'popular'
-  }
-}, {
-  timestamps: true,
-  versionKey: false,
-
+    default: 'popular',
+  },
 });
 
 export const ArticlesCollection = model('Article', ArticleSchema);

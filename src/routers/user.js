@@ -1,13 +1,15 @@
 import { Router } from 'express';
-import { getArticlesController } from '../controllers/articles.js';
-import { authenticate } from '../middlewares/authenticate.js';
+import {
+  getUserByIdController,
+  getUsersController,
+} from '../controllers/user.js';
+import { ctrlWrapper } from '../utils/ctrlWrapper.js';
+import { isValidId } from '../middlewares/isValidId.js';
 
 const router = Router();
 
-router.get('/', getArticlesController);
-router.get('/favouritearticles', authenticate, getArticlesController);
-router.get('/postedarticles', getArticlesController);
-router.put('/savearticle', authenticate, getArticlesController);
-router.delete('/deletefavourite', authenticate, getArticlesController);
+router.get('/', ctrlWrapper(getUsersController));
+
+router.get('/:userId', isValidId, ctrlWrapper(getUserByIdController));
 
 export default router;

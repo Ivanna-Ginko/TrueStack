@@ -18,21 +18,21 @@ requestBody:
         properties:
           name:
             type: string
-            example: John
+            example: 'John'
             description: User's name
           email:
             type: string
             format: email
-            example: 9123123@123gmail.com
+            example: 'john12345@gmail.com'
             description: User's email
           password:
             type: string
-            example: password
+            example: '12345john'
             description: User's password
 responses:
   '201':
     $ref: ../../../components/responses/user/201.yaml
   '409':
-    description: Conflict - Email already in use
+    description: Email is already in use
   '400':
-    description: Bad request - Validation error
+    description: Bad request
