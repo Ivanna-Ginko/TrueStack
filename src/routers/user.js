@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import {
+  getSavedArticlesOfUserController,
   getUserByIdController,
   getUsersController,
 } from '../controllers/user.js';
@@ -11,5 +12,7 @@ const router = Router();
 router.get('/', ctrlWrapper(getUsersController));
 
 router.get('/:userId', isValidId, ctrlWrapper(getUserByIdController));
+
+router.get('/saved-articles', ctrlWrapper(getSavedArticlesOfUserController));
 
 export default router;
