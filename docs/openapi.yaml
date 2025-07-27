@@ -9,6 +9,8 @@ info:
 tags:
   - name: Auth
     description: Auth operations.
+  - name: Articles
+    description: Article operations.
 servers:
   - url: http://localhost:3000
   - url: https://truestack.onrender.com
@@ -25,6 +27,18 @@ paths:
   /auth/refresh:
     post:
       $ref: ../swagger/paths/auth/refresh/post.yaml
+  /articles/{articleId}:
+    get:
+      $ref: ../swagger/paths/articles/{articleId}/get.yaml
+    patch:
+      $ref: ../swagger/paths/articles/{articleId}/patch.yaml
+    delete:
+      $ref: ../swagger/paths/articles/{articleId}/delete.yaml
+  /articles:
+    post:
+      $ref: ../swagger/paths/articles/post.yaml
+    get:
+      $ref: ../swagger/paths/articles/get.yaml
 components:
   securitySchemes:
     bearerAuth:

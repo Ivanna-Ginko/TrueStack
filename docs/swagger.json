@@ -21,6 +21,10 @@
     {
       "name": "Auth",
       "description": "Auth operations."
+    },
+    {
+      "name": "Articles",
+      "description": "Article operations."
     }
   ],
   "paths": {
@@ -240,6 +244,435 @@
           }
         }
       }
+    },
+    "/articles/{articleId}": {
+      "get": {
+        "tags": [
+          "Articles"
+        ],
+        "summary": "Get article",
+        "operationId": "getArticleById",
+        "description": "Get article by id",
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "articleId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "84fs58rt61hs82gi5y8ch691"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully found article!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found article!"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/article"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404-2"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Articles"
+        ],
+        "summary": "Update article",
+        "operationId": "updateArticleById",
+        "description": "Update article by its unique if.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "articleId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "84fs58rt61hs82gi5y8ch691"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "img": {
+                    "type": "string",
+                    "format": "binary",
+                    "example": "https://res.cloudinary.com/uqwgdu/image/upload/image.png"
+                  },
+                  "title": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 48,
+                    "example": "Сила тиші: як медитація лікує душу"
+                  },
+                  "article": {
+                    "type": "string",
+                    "minLength": 100,
+                    "maxLength": 4000,
+                    "example": "Іноді тиша мовчить голосніше за будь-які слова. У світі, сповненому шу…"
+                  },
+                  "rate": {
+                    "type": "number",
+                    "example": 15,
+                    "minimum": 0
+                  },
+                  "author": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 50,
+                    "example": "Назар Ткаченко"
+                  },
+                  "date": {
+                    "type": "string",
+                    "example": "2025-07-27"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully patched an article!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully patched an article!"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/article"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-2"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Articles"
+        ],
+        "summary": "Delete article",
+        "operationId": "deleteArticleById",
+        "description": "Delete a contact by its unique if. Requires authorization and ownership.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "articleId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "84fs58rt61hs82gi5y8ch691"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Article successfully deleted. No content returned."
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-2"
+          }
+        }
+      }
+    },
+    "/articles": {
+      "post": {
+        "tags": [
+          "Articles"
+        ],
+        "summary": "Create article",
+        "operationId": "createArticle",
+        "description": "Create a new article with payload",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "img",
+                  "title",
+                  "article",
+                  "author",
+                  "date"
+                ],
+                "properties": {
+                  "img": {
+                    "type": "string",
+                    "format": "binary",
+                    "example": "https://res.cloudinary.com/uqwgdu/image/upload/image.png"
+                  },
+                  "title": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 48,
+                    "example": "Сила тиші: як медитація лікує душу"
+                  },
+                  "article": {
+                    "type": "string",
+                    "minLength": 100,
+                    "maxLength": 4000,
+                    "example": "Іноді тиша мовчить голосніше за будь-які слова. У світі, сповненому шу…"
+                  },
+                  "rate": {
+                    "type": "number",
+                    "example": 13,
+                    "minimum": 0
+                  },
+                  "author": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 50,
+                    "example": "Назар Ткаченко"
+                  },
+                  "date": {
+                    "type": "string",
+                    "example": "2025-07-27"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creates a article",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 201
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully created an article!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/article"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Articles"
+        ],
+        "summary": "Get list of articles",
+        "operationId": "getArticles",
+        "description": "Get list of articles",
+        "security": [],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            },
+            "example": 1
+          },
+          {
+            "in": "query",
+            "name": "perPage",
+            "schema": {
+              "type": "integer",
+              "example": 12
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "createdAt",
+                "rate"
+              ],
+              "example": "rate"
+            },
+            "description": "Field to sort by. Default is `createdAt`."
+          },
+          {
+            "in": "query",
+            "name": "sortOrder",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "example": "asc"
+            },
+            "description": "Sorting direction. Default is `desc`."
+          },
+          {
+            "in": "query",
+            "name": "ownerId",
+            "schema": {
+              "type": "string",
+              "example": "65e4aabbccee33001122ff77"
+            },
+            "description": "Filter by author"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully found articles!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found articles!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "data",
+                        "page",
+                        "perPage",
+                        "totalItems",
+                        "totalPages",
+                        "hasNextPage",
+                        "hasPreviousPage"
+                      ],
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/article"
+                          }
+                        },
+                        "page": {
+                          "type": "number",
+                          "example": 2
+                        },
+                        "perPage": {
+                          "type": "number",
+                          "example": 12
+                        },
+                        "totalItems": {
+                          "type": "number",
+                          "example": 48
+                        },
+                        "totalPages": {
+                          "type": "number",
+                          "example": 4
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean",
+                          "example": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404-2"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -392,6 +825,110 @@
                 }
               }
             }
+          }
+        }
+      },
+      "404-2": {
+        "description": "Not found error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message",
+                "data"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 404
+                },
+                "message": {
+                  "type": "string",
+                  "example": "NotFoundError"
+                },
+                "data": {
+                  "type": "object",
+                  "required": [
+                    "message"
+                  ],
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Article not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "article": {
+        "type": "object",
+        "required": [
+          "img",
+          "title",
+          "article",
+          "author",
+          "date"
+        ],
+        "properties": {
+          "_id": {
+            "description": "Article's id",
+            "type": "string",
+            "example": "84fs58rt61hs82gi5y8ch691"
+          },
+          "img": {
+            "description": "Link to article's image",
+            "type": "string",
+            "example": "https://res.cloudinary.com/uqwgdu/image/upload/image.png"
+          },
+          "title": {
+            "description": "Article's title",
+            "type": "string",
+            "example": "Сила тиші: як медитація лікує душу"
+          },
+          "article": {
+            "description": "Article's article",
+            "type": "string",
+            "example": "Іноді тиша мовчить голосніше за будь-які слова. У світі, сповненому шу…"
+          },
+          "rate": {
+            "description": "Article rating. Shows how many users saved the article",
+            "type": "number",
+            "example": 13,
+            "minimum": 0
+          },
+          "author": {
+            "description": "Article's author",
+            "type": "string",
+            "example": "Назар Ткаченко"
+          },
+          "ownerId": {
+            "description": "User ID that owns this article",
+            "type": "string",
+            "example": "65e4aabbccee33001122ff77"
+          },
+          "date": {
+            "description": "Date the article was created",
+            "type": "string",
+            "example": "2025-07-27"
+          },
+          "createdAt": {
+            "description": "Date the article was created",
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-07-27T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "description": "Date the article was last updated",
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-07-27T16:35:22.123Z"
           }
         }
       }
