@@ -4,6 +4,8 @@ import {
   getUserById,
 } from '../services/users.js';
 import createHttpError from 'http-errors';
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+import { parseFilterParams } from '../utils/parseFilterParams.js';
 
 export const getUsersController = async (req, res, next) => {
   const users = await getAllUsers();
