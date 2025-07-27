@@ -148,6 +148,33 @@
                         "accessToken": {
                           "type": "string",
                           "example": "NuB85QNMA+UUUZWUdSPZ+mRyeVIaJfAkONkajoXn"
+                        },
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "example": "John",
+                              "description": "User's name"
+                            },
+                            "email": {
+                              "type": "string",
+                              "format": "email",
+                              "example": "john12345@gmail.com",
+                              "description": "User's email"
+                            },
+                            "_id": {
+                              "type": "string",
+                              "example": "65ca67e7ae7f10c88b598384",
+                              "description": "User ID"
+                            },
+                            "avatar": {
+                              "type": "string",
+                              "format": "uri",
+                              "example": "https://res.cloudinary.com/dgce49ndc/image/upload/v1752447915/ar3ps6z0sbxexlj7spgg",
+                              "description": "URL to user's avatar image"
+                            }
+                          }
                         }
                       }
                     }
@@ -746,6 +773,11 @@
                       "format": "date-time",
                       "example": "2025-07-26T12:18:02.095Z",
                       "description": "User update date"
+                    },
+                    "accessToken": {
+                      "type": "string",
+                      "description": "Access token",
+                      "example": "NuB85QNMA+UUUZWUdSPZ+mRyeVIaJfAkONkajoXn"
                     }
                   }
                 }
