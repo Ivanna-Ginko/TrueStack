@@ -28,7 +28,7 @@ export const getUserByIdController = async (req, res, next) => {
 };
 
 export const addArticleToSavedController = async (req, res) => {
-  // change after auth implement
+  // delete stub after auth implementation
   const userId = req.user?._id || '6881563901add19ee16fcff2';
   const { articleId } = req.body;
 
@@ -38,15 +38,27 @@ export const addArticleToSavedController = async (req, res) => {
       .json({ status: 400, message: 'ArticleId is required' });
   }
 
-  const updatedUser = await addArticleToSaved({ userId, articleId });
+  const { user, article, added } = await addArticleToSaved({
+    userId,
+    articleId,
+  });
 
-  if (!updatedUser) {
+  if (!user) {
     return res.status(404).json({ status: 404, message: 'User not found' });
   }
 
-  res.status(200).json({
+  if (!article) {
+    return res.status(404).json({ status: 404, message: 'Article not found' });
+  }
+
+  return res.status(200).json({
     status: 200,
-    message: 'Article added to saved articles successfully',
-    data: updatedUser.savedArticles,
+    message: added
+      ? 'Article added to saved articles successfully'
+      : 'Article is already in saved articles',
+    data: {
+      added,
+      article,
+    },
   });
 };

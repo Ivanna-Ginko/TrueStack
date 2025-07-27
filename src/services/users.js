@@ -1,3 +1,4 @@
+import { ArticlesCollection } from '../db/models/articles.js';
 import { UsersCollection } from '../db/models/user.js';
 
 export const getAllUsers = async () => {
@@ -11,15 +12,19 @@ export const getUserById = async (userId) => {
 };
 
 export const addArticleToSaved = async ({ userId, articleId }) => {
-  const updatedUser = await UsersCollection.findByIdAndUpdate(
-    userId,
-    { $addToSet: { savedArticles: articleId } },
-    { new: true },
+  const res = await UsersCollection.updateOne(
+    { _id: userId, savedArticles: { $ne: articleId } },
+    { $push: { savedArticles: articleId } },
   );
 
-  if (!updatedUser) {
-    return null;
-  }
+  const added = res.modifiedCount === 1;
 
-  return updatedUser;
+  const user = await UsersCollection.findById(userId).select('_id');
+  if (!user) return { user: null, article: null, added: false };
+
+  const article = await ArticlesCollection.findById(articleId)
+    .select('title img category author date desc rate')
+    .lean();
+
+  return { user, article, added };
 };
