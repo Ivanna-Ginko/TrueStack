@@ -24,8 +24,9 @@ const UserSchema = new Schema(
       default: null,
     },
     savedArticles: {
-      type: Number,
-      default: null,
+      type: [Schema.Types.ObjectId],
+      ref: 'Article',
+      default: [],
     },
   },
   { timestamps: true, versionKey: false },
