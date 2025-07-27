@@ -1,0 +1,22 @@
+# swagger/paths/articles/{articleId}/delete.yaml
+tags:
+  - Articles
+summary: Delete article
+operationId: deleteArticleById
+description: 'Delete a contact by its unique if. Requires authorization and ownership.'
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: articleId
+    required: true
+    schema:
+      type: string
+      example: 84fs58rt61hs82gi5y8ch691
+responses:
+  '204':
+    description: Article successfully deleted. No content returned.
+  '404':
+    $ref: '../../../components/responses/404.yaml'
+  '401':
+    $ref: '../../../components/responses/401.yaml'
