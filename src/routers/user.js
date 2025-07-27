@@ -15,6 +15,7 @@ router.get('/:userId', isValidId, ctrlWrapper(getUserByIdController));
 
 router.get(
   '/created-articles',
+  // authenticate,
   ctrlWrapper(getCreatedArticlesOfUserController),
 );
 

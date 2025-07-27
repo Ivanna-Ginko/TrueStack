@@ -30,25 +30,23 @@ export const getUserByIdController = async (req, res, next) => {
   });
 };
 
-export const getCreatedArticlesOfUserController = async (req, res, next) => {
-  const { _id: userId } = req.user;
+export const getCreatedArticlesOfUserController = async (req, res) => {
+  // change after auth implementation
+  const userId = req.user?._id || '6881563901add19ee16fcff2';
 
   const { page, perPage } = parsePaginationParams(req.query);
-  const { sortBy, sortOrder } = parseSortParams(req.query);
   const filter = parseFilterParams(req.query);
 
   const result = await getCreatedArticlesOfUser({
     userId,
     page,
     perPage,
-    sortBy,
-    sortOrder,
     filter,
   });
 
-  res.json({
+  res.status(200).json({
     status: 200,
-    message: 'Successfully found user created articles',
+    message: 'Successfully found created articles',
     data: result,
   });
 };

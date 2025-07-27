@@ -16,31 +16,27 @@ export const getCreatedArticlesOfUser = async ({
   userId,
   page = 1,
   perPage = 12,
-  sortBy = '_id',
-  sortOrder = 'desc',
   filter = {},
 }) => {
   const skip = (page - 1) * perPage;
 
-  const baseFilter = { ownerId: userId };
+  const query = { ownerId: userId };
 
-  if (filter.title) {
-    baseFilter.title = { $regex: new RegExp(filter.title, 'i') };
-  }
   if (filter.category) {
-    baseFilter.category = filter.category;
+    query.category = filter.category;
+  }
+  if (filter.title) {
+    query.title = { $regex: new RegExp(filter.title, 'i') };
   }
 
-  const query = ArticlesCollection.find(baseFilter);
+  const total = await ArticlesCollection.countDocuments(query);
 
-  const [total, items] = await Promise.all([
-    ArticlesCollection.countDocuments(baseFilter),
-    query
-      .sort({ [sortBy]: sortOrder === 'asc' ? 1 : -1 })
-      .skip(skip)
-      .limit(perPage)
-      .lean(),
-  ]);
+  const items = await ArticlesCollection.find(query)
+    .sort({ date: -1 })
+    .skip(skip)
+    .limit(perPage)
+    .select('title img category author date')
+    .lean();
 
   return {
     items,
