@@ -6,7 +6,6 @@ import {
 import createHttpError from 'http-errors';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
-import { parseSortParams } from '../utils/parseSortParams.js';
 
 export const getUsersController = async (req, res, next) => {
   const users = await getAllUsers();
@@ -34,19 +33,16 @@ export const getUserByIdController = async (req, res, next) => {
 };
 
 export const getSavedArticlesOfUserController = async (req, res, next) => {
-  // const { _id: userId } = req.user;
-  const userId = '6881563901add19ee16fcff2';
+  const { _id: userId } = req.user;
+  // const userId = '6881563901add19ee16fcff2';
 
   const { page, perPage } = parsePaginationParams(req.query);
-  const { sortBy, sortOrder } = parseSortParams(req.query);
   const filter = parseFilterParams(req.query);
 
   const result = await getSavedArticlesOfUser({
     userId,
     page,
     perPage,
-    sortBy,
-    sortOrder,
     filter,
   });
 

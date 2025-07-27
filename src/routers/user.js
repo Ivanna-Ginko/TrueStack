@@ -6,12 +6,17 @@ import {
 } from '../controllers/user.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { isValidId } from '../middlewares/isValidId.js';
+import { authenticate } from '../middlewares/authenticate.js';
 
 const router = Router();
 
-router.get('/saved-articles', ctrlWrapper(getSavedArticlesOfUserController));
 router.get('/', ctrlWrapper(getUsersController));
 
+router.get(
+  '/saved-articles',
+  authenticate,
+  ctrlWrapper(getSavedArticlesOfUserController),
+);
 router.get('/:userId', isValidId, ctrlWrapper(getUserByIdController));
 
 export default router;
