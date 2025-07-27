@@ -33,8 +33,9 @@ export const getUserByIdController = async (req, res, next) => {
 };
 
 export const getSavedArticlesOfUserController = async (req, res, next) => {
-  const { _id: userId } = req.user;
-  // const userId = '6881563901add19ee16fcff2';
+  // change after auth implementation:
+  const userId = req.user?._id || '6881563901add19ee16fcff2';
+  // const { _id: userId } = req.user;
 
   const { page, perPage } = parsePaginationParams(req.query);
   const filter = parseFilterParams(req.query);
