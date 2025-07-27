@@ -1,5 +1,6 @@
 import {
   getAllUsers,
+  getCreatedArticlesOfUser,
   getSavedArticlesOfUser,
   getUserById,
 } from '../services/users.js';
@@ -54,6 +55,27 @@ export const getSavedArticlesOfUserController = async (req, res, next) => {
   res.json({
     status: 200,
     message: 'Successfully found saved articles',
+    data: result,
+  });
+};
+
+export const getCreatedArticlesOfUserController = async (req, res) => {
+  // change after auth implementation
+  const userId = req.user?._id || '6881563901add19ee16fcff2';
+
+  const { page, perPage } = parsePaginationParams(req.query);
+  const filter = parseFilterParams(req.query);
+
+  const result = await getCreatedArticlesOfUser({
+    userId,
+    page,
+    perPage,
+    filter,
+  });
+
+  res.status(200).json({
+    status: 200,
+    message: 'Successfully found created articles',
     data: result,
   });
 };
