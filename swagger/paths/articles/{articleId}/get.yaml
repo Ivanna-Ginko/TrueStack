@@ -1,0 +1,37 @@
+# swagger/paths/articles/{articleId}/get.yaml
+tags:
+  - Articles
+summary: Get article
+operationId: getArticleById
+description: 'Get article by id'
+security: []
+parameters:
+  - in: path
+    name: articleId
+    required: true
+    schema:
+      type: string
+      example: 84fs58rt61hs82gi5y8ch691
+responses:
+  '200':
+    description: 'Successfully found article!'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully found article!
+            data:
+              $ref: '../../../components/schemas/article.yaml'
+  '404':
+    $ref: '../../../components/responses/404.yaml'
+

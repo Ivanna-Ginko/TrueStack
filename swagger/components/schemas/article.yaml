@@ -1,0 +1,54 @@
+# swagger/components/schemas/article.yaml
+
+type: object
+required:
+  - img
+  - title
+  - article
+  - author
+  - date
+properties:
+  _id:
+    description: "Article's id"
+    type: string
+    example: 84fs58rt61hs82gi5y8ch691
+  img:
+    description: "Link to article's image"
+    type: string
+    example: https://res.cloudinary.com/uqwgdu/image/upload/image.png
+  title:
+    description: "Article's title"
+    type: string
+    example: "Сила тиші: як медитація лікує душу"
+  article:
+    description: "Article's article"
+    type: string
+    example: "Іноді тиша мовчить голосніше за будь-які слова. У світі, сповненому шу…"
+  rate:
+    description: "Article rating. Shows how many users saved the article"
+    type: number
+    example: 13
+    minimum: 0
+  author:
+    description: "Article's author"
+    type: string
+    example: "Назар Ткаченко"
+  ownerId:
+    description: "User ID that owns this article"
+    type: string
+    example: 65e4aabbccee33001122ff77
+  date:
+    description: "Date the article was created"
+    type: string
+    example: "2025-07-27"
+  createdAt:
+    description: "Date the article was created"
+    type: string
+    format: date-time
+    example: "2025-07-27T10:00:00.000Z"
+  updatedAt:
+    description: "Date the article was last updated"
+    type: string
+    format: date-time
+    example: "2025-07-27T16:35:22.123Z"
+
