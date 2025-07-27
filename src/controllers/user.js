@@ -1,9 +1,10 @@
 import {
   getAllUsers,
-  getCreatedArticlesOfUser,
-  getSavedArticlesOfUser,
   getUserById,
   addArticleToSaved,
+  removeArticleFromSaved,
+  getCreatedArticlesOfUser,
+  getSavedArticlesOfUser,
 } from '../services/users.js';
 import createHttpError from 'http-errors';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
@@ -96,7 +97,7 @@ export const getSavedArticlesOfUserController = async (req, res, next) => {
   });
 };
 
-export const getCreatedArticlesOfUserController = async (req, res) => {
+export const getCreatedArticlesOfUserController = async (req, res, next) => {
   // change after auth implementation
   const userId = req.user?._id || '6881563901add19ee16fcff2';
 
@@ -115,4 +116,14 @@ export const getCreatedArticlesOfUserController = async (req, res) => {
     message: 'Successfully found created articles',
     data: result,
   });
+};
+
+export const removeArticleFromSavedController = async (req, res, next) => {
+  // delete the stub after auth implementation
+  const userId = req.user?._id || '6881563901add19ee16fcff2';
+  const { articleId } = req.params;
+
+  await removeArticleFromSaved(userId, articleId);
+
+  res.status(204).send();
 };

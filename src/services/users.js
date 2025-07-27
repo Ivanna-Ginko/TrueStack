@@ -1,5 +1,6 @@
 import { ArticlesCollection } from '../db/models/articles.js';
 import { UsersCollection } from '../db/models/user.js';
+import createHttpError from 'http-errors';
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 
 export const getAllUsers = async () => {
@@ -100,4 +101,17 @@ export const getCreatedArticlesOfUser = async ({
     items,
     ...calculatePaginationData(total, perPage, page),
   };
+};
+
+export const removeArticleFromSaved = async (userId, articleId) => {
+  const result = await UsersCollection.updateOne(
+    { _id: userId },
+    { $pull: { savedArticles: articleId } },
+  );
+
+  if (result.modifiedCount === 0) {
+    throw createHttpError(404, 'Article not found in saved list');
+  }
+
+  return true;
 };
