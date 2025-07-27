@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import {
+  addArticleToSavedController,
   getSavedArticlesOfUserController,
   getCreatedArticlesOfUserController,
   getUserByIdController,
@@ -12,6 +13,12 @@ import { authenticate } from '../middlewares/authenticate.js';
 const router = Router();
 
 router.get('/', ctrlWrapper(getUsersController));
+
+router.post(
+  '/saved-articles/add-article',
+  authenticate,
+  ctrlWrapper(addArticleToSavedController),
+);
 
 router.get(
   '/created-articles',
