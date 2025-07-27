@@ -1,35 +1,34 @@
 import { Schema, model } from 'mongoose';
 
-const UserSchema = new Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-    },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
-    avatar: {
-      type: String,
-      default: null,
-    },
-    articlesAmount: {
-      type: Number,
-      default: null,
-    },
-    savedArticles: {
-      type: Number,
-      default: null,
-    },
+const UserSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
   },
-  { timestamps: true, versionKey: false },
-);
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  avatar: {
+    type: String,
+    default: null,
+  },
+  articlesAmount: {
+    type: Number,
+    default: null,
+  },
+  savedArticles: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Article',
+    },
+  ],
+});
 
 UserSchema.methods.toJSON = function () {
   const obj = this.toObject();
