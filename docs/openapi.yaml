@@ -45,6 +45,9 @@ paths:
   /user/saved-articles:
     get:
       $ref: ../swagger/paths/user/saved-articles/get.yaml
+  /user/saved-articles/add-article:
+    post:
+      $ref: ../swagger/paths/user/saved-articles/add-article/post.yaml
 
   /user/{userId}:
     get:
