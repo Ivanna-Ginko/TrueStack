@@ -20,12 +20,12 @@ export const registerUserController = async (req, res) => {
   const avatar = req.file;
 
   const avatarUrl = avatar ? await saveFileToCloudinary(avatar) : null;
-  const user = await registerUser({
+  await registerUser({
     ...req.body,
     avatar: avatarUrl,
   });
 
-  const { session } = await loginUser({
+  const { user: loggedInUser, session } = await loginUser({
     email: req.body.email,
     password: req.body.password,
   });
@@ -36,7 +36,7 @@ export const registerUserController = async (req, res) => {
     status: 201,
     message: 'Successfully registered a user!',
     data: {
-      user,
+      user: loggedInUser,
       accessToken: session.accessToken,
     },
   });

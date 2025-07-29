@@ -66,6 +66,13 @@ responses:
                       format: uri
                       example: 'https://res.cloudinary.com/dgce49ndc/image/upload/v1752447915/ar3ps6z0sbxexlj7spgg'
                       description: URL to user's avatar image
+                    savedArticles:
+                      type: array
+                      description: List of user`s saved articles
+                    articlesAmount:
+                      type: integer
+                      description: number of articles added by the user
+                      example: 4
   '401':
     $ref: '../../../components/responses/401.yaml'
   '404':
