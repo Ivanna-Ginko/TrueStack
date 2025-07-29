@@ -21,6 +21,5 @@ export const updateArticleSchema = Joi.object({
 });
 
 export const addArticleToSavedSchema = Joi.object({
-  userId: Joi.string().hex().length(24).required(),
   articleId: Joi.string().hex().length(24).required(),
 });
