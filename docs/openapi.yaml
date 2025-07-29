@@ -41,6 +41,11 @@ paths:
       $ref: ../swagger/paths/articles/post.yaml
     get:
       $ref: ../swagger/paths/articles/get.yaml
+
+  /user/saved-articles:
+    get:
+      $ref: ../swagger/paths/user/saved-articles/get.yaml
+
   /user/{userId}:
     get:
       $ref: ../swagger/paths/user/{userId}/get.yaml
