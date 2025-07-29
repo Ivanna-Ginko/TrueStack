@@ -51,3 +51,7 @@ content:
               format: date-time
               example: 2025-07-26T12:18:02.095Z
               description: User update date
+            accessToken:
+              type: string
+              description: Access token
+              example: 'NuB85QNMA+UUUZWUdSPZ+mRyeVIaJfAkONkajoXn'
