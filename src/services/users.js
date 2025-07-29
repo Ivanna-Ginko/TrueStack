@@ -2,6 +2,7 @@ import { ArticlesCollection } from '../db/models/articles.js';
 import { UsersCollection } from '../db/models/user.js';
 import createHttpError from 'http-errors';
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
+import { updateRate } from './articles.js';
 
 export const getAllUsers = async () => {
   const users = await UsersCollection.find();
@@ -73,6 +74,10 @@ export const addArticleToSaved = async ({ userId, articleId }) => {
 
   const added = res.modifiedCount === 1;
 
+  if (added) {
+    await updateRate(articleId, +1);
+  }
+
   const user = await UsersCollection.findById(userId).select('_id');
   if (!user) return { user: null, article: null, added: false };
 
@@ -88,6 +93,8 @@ export const removeArticleFromSaved = async (userId, articleId) => {
     { _id: userId },
     { $pull: { savedArticles: articleId } },
   );
+
+  await updateRate(articleId, -1);
 
   if (result.modifiedCount === 0) {
     throw createHttpError(404, 'Article not found in saved list');
