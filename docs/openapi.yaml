@@ -52,6 +52,10 @@ paths:
     delete:
       $ref: ../swagger/paths/user/saved-articles/{articleId}/delete.yaml
 
+  /user/created-articles:
+    get:
+      $ref: ../swagger/paths/user/created-articles/get.yaml
+
   /user/{userId}:
     get:
       $ref: ../swagger/paths/user/{userId}/get.yaml
