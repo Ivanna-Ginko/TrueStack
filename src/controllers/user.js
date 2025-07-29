@@ -1,8 +1,10 @@
 import {
   getAllUsers,
+  getUserById,
+  addArticleToSaved,
+  removeArticleFromSaved,
   getCreatedArticlesOfUser,
   getSavedArticlesOfUser,
-  getUserById,
 } from '../services/users.js';
 import createHttpError from 'http-errors';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
@@ -19,7 +21,7 @@ export const getUsersController = async (req, res, next) => {
 };
 
 export const getUserByIdController = async (req, res, next) => {
-  const { _id: userId } = req.params;
+  const { userId } = req.params;
   const user = await getUserById(userId);
 
   if (!user) {
@@ -30,6 +32,42 @@ export const getUserByIdController = async (req, res, next) => {
     status: 200,
     message: `Successfully found user with id ${userId}`,
     data: user,
+  });
+};
+
+export const addArticleToSavedController = async (req, res) => {
+  // delete stub after auth implementation
+  const userId = req.user?._id || '6881563901add19ee16fcff2';
+  const { articleId } = req.body;
+
+  if (!articleId) {
+    return res
+      .status(400)
+      .json({ status: 400, message: 'ArticleId is required' });
+  }
+
+  const { user, article, added } = await addArticleToSaved({
+    userId,
+    articleId,
+  });
+
+  if (!user) {
+    return res.status(404).json({ status: 404, message: 'User not found' });
+  }
+
+  if (!article) {
+    return res.status(404).json({ status: 404, message: 'Article not found' });
+  }
+
+  return res.status(200).json({
+    status: 200,
+    message: added
+      ? 'Article added to saved articles successfully'
+      : 'Article is already in saved articles',
+    data: {
+      added,
+      article,
+    },
   });
 };
 
@@ -49,7 +87,7 @@ export const getSavedArticlesOfUserController = async (req, res, next) => {
   });
 
   if (result === null) {
-    return res.status(404).json({ message: ' User not found' });
+    return res.status(404).json({ message: 'User not found' });
   }
 
   res.json({
@@ -59,7 +97,7 @@ export const getSavedArticlesOfUserController = async (req, res, next) => {
   });
 };
 
-export const getCreatedArticlesOfUserController = async (req, res) => {
+export const getCreatedArticlesOfUserController = async (req, res, next) => {
   // change after auth implementation
   const userId = req.user?._id || '6881563901add19ee16fcff2';
 
@@ -78,4 +116,14 @@ export const getCreatedArticlesOfUserController = async (req, res) => {
     message: 'Successfully found created articles',
     data: result,
   });
+};
+
+export const removeArticleFromSavedController = async (req, res, next) => {
+  // delete the stub after auth implementation
+  const userId = req.user?._id || '6881563901add19ee16fcff2';
+  const { articleId } = req.params;
+
+  await removeArticleFromSaved(userId, articleId);
+
+  res.status(204).send();
 };
