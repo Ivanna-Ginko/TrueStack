@@ -11,6 +11,8 @@ import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { isValidId } from '../middlewares/isValidId.js';
 import { isValidIdArticles } from '../middlewares/isValidIdArticles.js';
 import { authenticate } from '../middlewares/authenticate.js';
+import { validateBody } from '../middlewares/validateBody.js';
+import { addArticleToSavedSchema } from '../validation/articles.js';
 
 const router = Router();
 
@@ -19,6 +21,7 @@ router.get('/', ctrlWrapper(getUsersController));
 router.post(
   '/saved-articles/add-article',
   authenticate,
+  validateBody(addArticleToSavedSchema),
   ctrlWrapper(addArticleToSavedController),
 );
 
