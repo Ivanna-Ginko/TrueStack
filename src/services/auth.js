@@ -54,12 +54,7 @@ export const loginUser = async (payload) => {
     refreshTokenValidUntil: new Date(Date.now() + ONE_DAY),
   });
   return {
-    user: {
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      avatar: user.avatar,
-    },
+    user,
     session,
   };
 };
@@ -89,8 +84,22 @@ export const refreshUsersSession = async ({ sessionId, refreshToken }) => {
 
   await SessionsCollection.deleteOne({ _id: sessionId, refreshToken });
 
-  return await SessionsCollection.create({
+  const newSessionData = await SessionsCollection.create({
     userId: session.userId,
     ...newSession,
   });
+
+  const user = await UsersCollection.findById(session.userId);
+
+  return {
+    session: newSessionData,
+    user,
+  };
 };
+
+// //: {
+//       _id: user._id,
+//       name: user.name,
+//       email: user.email,
+//       avatar: user.avatar,
+//     }
