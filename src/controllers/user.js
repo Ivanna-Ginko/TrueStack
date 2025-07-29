@@ -21,7 +21,7 @@ export const getUsersController = async (req, res, next) => {
 };
 
 export const getUserByIdController = async (req, res, next) => {
-  const { _id: userId } = req.params;
+  const { userId } = req.params;
   const user = await getUserById(userId);
 
   if (!user) {
