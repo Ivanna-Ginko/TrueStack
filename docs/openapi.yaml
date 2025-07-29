@@ -48,6 +48,9 @@ paths:
   /user/saved-articles/add-article:
     post:
       $ref: ../swagger/paths/user/saved-articles/add-article/post.yaml
+  /user/saved-articles/{articleId}:
+    delete:
+      $ref: ../swagger/paths/user/saved-articles/{articleId}/delete.yaml
 
   /user/{userId}:
     get:
