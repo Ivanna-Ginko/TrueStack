@@ -55,3 +55,10 @@ content:
               type: string
               description: Access token
               example: 'NuB85QNMA+UUUZWUdSPZ+mRyeVIaJfAkONkajoXn'
+            savedArticles:
+              type: array
+              description: List of user`s saved articles
+            articlesAmount:
+              type: integer
+              description: Number of articles added by the user
+              example: 4
