@@ -3,8 +3,6 @@ tags:
 summary: Get user by id
 operationId: getUserById
 description: 'Get user by their unique ID'
-security:
-  - bearerAuth: []
 parameters:
   - in: path
     name: userId
@@ -33,7 +31,5 @@ responses:
             data:
               type: object
               $ref: '../../../components/schemas/user.yaml'
-  '401':
-    $ref: ../../../components/responses/user/401.yaml
   '404':
     $ref: ../../../components/responses/user/404.yaml
