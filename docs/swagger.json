@@ -1156,11 +1156,6 @@
         "summary": "Get user by id",
         "operationId": "getUserById",
         "description": "Get user by their unique ID",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "parameters": [
           {
             "in": "path",
@@ -1201,9 +1196,6 @@
                 }
               }
             }
-          },
-          "401": {
-            "$ref": "#/components/responses/401-2"
           },
           "404": {
             "$ref": "#/components/responses/404"
