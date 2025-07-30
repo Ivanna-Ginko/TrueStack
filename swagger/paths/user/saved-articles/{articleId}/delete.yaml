@@ -1,0 +1,21 @@
+tags:
+  - User
+summary: Remove article from list of saved articles
+operationId: deleteArticle
+description: 'Remove saved article from the list of saved articles'
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: articleId
+    required: true
+    schema:
+      type: string
+      example: '68498236a100312bea078fe6'
+responses:
+  '204':
+    description: 'No content'
+  '401':
+    $ref: ../../../../components/responses/user/401.yaml
+  '404':
+    $ref: ../../../../components/responses/404.yaml
