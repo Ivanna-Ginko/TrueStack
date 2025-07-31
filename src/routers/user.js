@@ -27,7 +27,6 @@ router.post(
 
 router.get(
   '/created-articles',
-  authenticate,
   ctrlWrapper(getCreatedArticlesOfUserController),
 );
 
