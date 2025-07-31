@@ -42,23 +42,23 @@ paths:
     get:
       $ref: ../swagger/paths/articles/get.yaml
 
-  /user/saved-articles:
+  /users/saved-articles:
     get:
-      $ref: ../swagger/paths/user/saved-articles/get.yaml
-  /user/saved-articles/add-article:
+      $ref: ../swagger/paths/users/saved-articles/get.yaml
+  /users/saved-articles/add-article:
     post:
-      $ref: ../swagger/paths/user/saved-articles/add-article/post.yaml
-  /user/saved-articles/{articleId}:
+      $ref: ../swagger/paths/users/saved-articles/add-article/post.yaml
+  /users/saved-articles/{articleId}:
     delete:
-      $ref: ../swagger/paths/user/saved-articles/{articleId}/delete.yaml
+      $ref: ../swagger/paths/users/saved-articles/{articleId}/delete.yaml
 
-  /user/created-articles:
+  /users/created-articles:
     get:
-      $ref: ../swagger/paths/user/created-articles/get.yaml
+      $ref: ../swagger/paths/users/created-articles/get.yaml
 
-  /user/{userId}:
+  /users/{userId}:
     get:
-      $ref: ../swagger/paths/user/{userId}/get.yaml
+      $ref: ../swagger/paths/users/{userId}/get.yaml
 components:
   securitySchemes:
     bearerAuth:
