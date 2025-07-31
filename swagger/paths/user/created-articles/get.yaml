@@ -3,8 +3,7 @@ tags:
 summary: Get list of articles created by user
 operationId: getCreatedArticles
 description: 'Returns a paginated list of articles created by user'
-security:
-  - bearerAuth: []
+security: []
 
 parameters:
   - in: query
@@ -70,7 +69,5 @@ responses:
                 hasPreviousPage:
                   type: boolean
                   example: false
-  '401':
-    $ref: '../../../components/responses/user/401.yaml'
   '404':
     $ref: '../../../components/responses/404.yaml'
