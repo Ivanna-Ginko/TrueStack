@@ -6,6 +6,7 @@ import {
   getUserByIdController,
   getUsersController,
   removeArticleFromSavedController,
+  getMe,
 } from '../controllers/user.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { isValidId } from '../middlewares/isValidId.js';
@@ -17,6 +18,8 @@ import { addArticleToSavedSchema } from '../validation/articles.js';
 const router = Router();
 
 router.get('/', ctrlWrapper(getUsersController));
+
+router.get('/me', authenticate, ctrlWrapper(getMe));
 
 router.post(
   '/saved-articles/add-article',
