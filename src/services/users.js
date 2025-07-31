@@ -99,16 +99,22 @@ export const addArticleToSaved = async ({ userId, articleId }) => {
 };
 
 export const removeArticleFromSaved = async (userId, articleId) => {
-  const result = await UsersCollection.updateOne(
-    { _id: userId },
-    { $pull: { savedArticles: articleId } },
-  );
+  const user = await UsersCollection.findById(userId);
 
-  await updateRate(articleId, -1);
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
 
-  if (result.modifiedCount === 0) {
+  const wasSaved = user.savedArticles.includes(articleId);
+
+  if (!wasSaved) {
     throw createHttpError(404, 'Article not found in saved list');
   }
 
-  return true;
+  user.savedArticles.pull(articleId);
+  await user.save();
+
+  await updateRate(articleId, -1);
+
+  return { savedArticleIds: user.savedArticles };
 };

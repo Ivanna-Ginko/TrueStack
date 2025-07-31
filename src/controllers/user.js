@@ -114,7 +114,11 @@ export const removeArticleFromSavedController = async (req, res, next) => {
   const userId = req.user?._id;
   const { articleId } = req.params;
 
-  await removeArticleFromSaved(userId, articleId);
+  const { savedArticleIds } = await removeArticleFromSaved(userId, articleId);
 
-  res.status(204).send();
+  if (savedArticleIds.length === 0) {
+    return res.status(204).send();
+  }
+
+  res.status(200).json({ savedArticleIds });
 };
