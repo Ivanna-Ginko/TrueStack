@@ -9,8 +9,15 @@ export const getAllUsers = async () => {
   return users;
 };
 
+// export const getUserById = async (userId) => {
+//   const user = await UsersCollection.findById(userId);
+//   return user;
+// };
+
 export const getUserById = async (userId) => {
-  const user = await UsersCollection.findById(userId);
+  const user = await UsersCollection.findById(userId).select(
+    'name email avatar',
+  );
   return user;
 };
 

@@ -1179,7 +1179,21 @@
                     },
                     "data": {
                       "type": "object",
-                      "$ref": "#/components/schemas/user"
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "example": "John Doe"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "j.doe@mail.com"
+                        },
+                        "avatar": {
+                          "type": "string",
+                          "format": "uri",
+                          "example": "https://ftp.goit.study/img/harmoniq/users/6881563901add19ee16fcff2.web…"
+                        }
+                      }
                     }
                   }
                 }
@@ -1511,49 +1525,6 @@
             "type": "string",
             "format": "date-time",
             "example": "2025-07-27T16:35:22.123Z"
-          }
-        }
-      },
-      "user": {
-        "type": "object",
-        "required": [
-          "_id",
-          "name",
-          "email"
-        ],
-        "properties": {
-          "_id": {
-            "description": "User's ID",
-            "type": "string",
-            "example": "6881563901add19ee16fcff2"
-          },
-          "name": {
-            "description": "User's name",
-            "type": "string",
-            "example": "John Doe"
-          },
-          "email": {
-            "description": "User's email",
-            "type": "string",
-            "example": "johndoe@example.com"
-          },
-          "avatar": {
-            "description": "User's photo URL",
-            "type": "string",
-            "example": "https://example.com/avatar.jpg"
-          },
-          "articlesAmount": {
-            "description": "Number of user's articles",
-            "type": "integer",
-            "example": 5
-          },
-          "savedArticles": {
-            "description": "IDs of articles saved by user",
-            "type": "array",
-            "items": {
-              "type": "string",
-              "example": "64b12c88a7d56ecb9f6e4301"
-            }
           }
         }
       }
