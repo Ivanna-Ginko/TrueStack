@@ -912,7 +912,7 @@
         },
         "responses": {
           "200": {
-            "description": "Article added to saved articles successfully",
+            "description": "Article successfully added to saved articles",
             "content": {
               "application/json": {
                 "schema": {
@@ -935,7 +935,8 @@
                       "type": "object",
                       "required": [
                         "added",
-                        "article"
+                        "article",
+                        "savedArticles"
                       ],
                       "properties": {
                         "added": {
@@ -950,7 +951,7 @@
                             "_id",
                             "img",
                             "title",
-                            "rate"
+                            "author"
                           ],
                           "properties": {
                             "_id": {
@@ -960,19 +961,27 @@
                             },
                             "img": {
                               "type": "string",
+                              "format": "uri",
                               "description": "URL of the article's image",
                               "example": "https://ftp.goit.study/img/harmoniq/f12e886489f94b5886d03e95vn.jpg"
                             },
                             "title": {
                               "type": "string",
                               "description": "Title of the article",
-                              "example": "'When anxiety fills the space: the path to calm"
+                              "example": "When anxiety fills the space: the path to calm"
                             },
-                            "rate": {
-                              "type": "number",
-                              "description": "Number of users who saved this article",
-                              "example": 16
+                            "author": {
+                              "type": "string",
+                              "description": "Author's name",
+                              "example": "Анастасія Олійник"
                             }
+                          }
+                        },
+                        "savedArticles": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "example": "68498236a100312bea078fef"
                           }
                         }
                       }

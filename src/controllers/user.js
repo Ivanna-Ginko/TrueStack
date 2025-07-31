@@ -105,6 +105,7 @@ export const addArticleToSavedController = async (req, res) => {
     data: {
       added,
       article,
+      savedArticles: user.savedArticles,
     },
   });
 };

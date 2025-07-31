@@ -21,7 +21,7 @@ requestBody:
 
 responses:
   '200':
-    description: Article added to saved articles successfully
+    description: 'Article successfully added to saved articles'
     content:
       application/json:
         schema:
@@ -36,16 +36,17 @@ responses:
               example: 200
             message:
               type: string
-              example: Successfully added the article to saved!
+              example: 'Successfully added the article to saved!'
             data:
               type: object
               required:
                 - added
                 - article
+                - savedArticles
               properties:
                 added:
                   type: boolean
-                  description: If the article is successfully added
+                  description: 'If the article is successfully added'
                   example: true
                 article:
                   type: object
@@ -54,7 +55,7 @@ responses:
                     - _id
                     - img
                     - title
-                    - rate
+                    - author
                   properties:
                     _id:
                       type: string
@@ -62,16 +63,22 @@ responses:
                       example: '68498236a100312bea078fe6'
                     img:
                       type: string
+                      format: uri
                       description: URL of the article's image
                       example: 'https://ftp.goit.study/img/harmoniq/f12e886489f94b5886d03e95vn.jpg'
                     title:
                       type: string
                       description: Title of the article
-                      example: "'When anxiety fills the space: the path to calm"
-                    rate:
-                      type: number
-                      description: Number of users who saved this article
-                      example: 16
+                      example: 'When anxiety fills the space: the path to calm'
+                    author:
+                      type: string
+                      description: "Author's name"
+                      example: 'Анастасія Олійник'
+                savedArticles:
+                  type: array
+                  items:
+                    type: string
+                    example: '68498236a100312bea078fef'
   '400':
     $ref: ../../../../components/responses/400.yaml
   '401':

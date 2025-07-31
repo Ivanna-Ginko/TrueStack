@@ -85,11 +85,14 @@ export const addArticleToSaved = async ({ userId, articleId }) => {
     await updateRate(articleId, +1);
   }
 
-  const user = await UsersCollection.findById(userId).select('_id');
+  const user = await UsersCollection.findById(userId)
+    .select('_id savedArticles')
+    .lean();
+
   if (!user) return { user: null, article: null, added: false };
 
   const article = await ArticlesCollection.findById(articleId)
-    .select('title img author rate')
+    .select('title img author')
     .lean();
 
   return { user, article, added };
