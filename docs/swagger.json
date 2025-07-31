@@ -558,11 +558,6 @@
                     "maxLength": 4000,
                     "example": "Іноді тиша мовчить голосніше за будь-які слова. У світі, сповненому шу…"
                   },
-                  "rate": {
-                    "type": "number",
-                    "example": 13,
-                    "minimum": 0
-                  },
                   "author": {
                     "type": "string",
                     "minLength": 2,
@@ -1044,11 +1039,7 @@
         "summary": "Get list of articles created by user",
         "operationId": "getCreatedArticles",
         "description": "Returns a paginated list of articles created by user",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [],
         "parameters": [
           {
             "in": "query",
@@ -1139,9 +1130,6 @@
               }
             }
           },
-          "401": {
-            "$ref": "#/components/responses/401-2"
-          },
           "404": {
             "$ref": "#/components/responses/404-2"
           }
@@ -1156,6 +1144,7 @@
         "summary": "Get user by id",
         "operationId": "getUserById",
         "description": "Get user by their unique ID",
+        "security": [],
         "parameters": [
           {
             "in": "path",

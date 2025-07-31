@@ -3,6 +3,7 @@ tags:
 summary: Get user by id
 operationId: getUserById
 description: 'Get user by their unique ID'
+security: []
 parameters:
   - in: path
     name: userId
