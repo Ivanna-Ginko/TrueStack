@@ -19,6 +19,16 @@ export const getUsersController = async (req, res, next) => {
   });
 };
 
+export const getMe = async (req, res) => {
+  const user = req.user;
+
+  res.json({
+    status: 200,
+    message: 'Successfully found user',
+    data: user,
+  });
+};
+
 export const getUserByIdController = async (req, res, next) => {
   const { userId } = req.params;
   const user = await getUserById(userId);
