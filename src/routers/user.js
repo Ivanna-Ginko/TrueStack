@@ -27,22 +27,17 @@ router.get(
   ctrlWrapper(getTopUsersByArticlesRatingController),
 );
 
-router.post(
-  '/saved-articles/add-article',
-  authenticate,
-  validateBody(addArticleToSavedSchema),
-  ctrlWrapper(addArticleToSavedController),
-);
-
-router.get(
-  '/created-articles',
-  ctrlWrapper(getCreatedArticlesOfUserController),
-);
-
 router.get(
   '/saved-articles',
   authenticate,
   ctrlWrapper(getSavedArticlesOfUserController),
+);
+
+router.post(
+  '/saved-articles',
+  authenticate,
+  validateBody(addArticleToSavedSchema),
+  ctrlWrapper(addArticleToSavedController),
 );
 
 router.delete(
@@ -50,6 +45,11 @@ router.delete(
   isValidIdArticles,
   authenticate,
   ctrlWrapper(removeArticleFromSavedController),
+);
+
+router.get(
+  '/created-articles',
+  ctrlWrapper(getCreatedArticlesOfUserController),
 );
 
 router.get('/:userId', isValidId, ctrlWrapper(getUserByIdController));
