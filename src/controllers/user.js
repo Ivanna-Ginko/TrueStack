@@ -65,9 +65,14 @@ export const getSavedArticlesOfUserController = async (req, res, next) => {
 };
 
 export const getCreatedArticlesOfUserController = async (req, res, next) => {
-  console.log('userId from req.user:', req.user?._id);
+  const userId = req.query.userId || req.params.userId;
 
-  const userId = req.user?._id;
+  if (!userId) {
+    return res.status(400).json({
+      status: 400,
+      message: 'Missing userId',
+    });
+  }
 
   const { page, perPage } = parsePaginationParams(req.query);
 
