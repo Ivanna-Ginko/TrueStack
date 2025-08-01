@@ -50,7 +50,26 @@ responses:
                 items:
                   type: array
                   items:
-                    $ref: ../../../components/schemas/article.yaml
+                    type: object
+                    required:
+                      - _id
+                      - img
+                      - title
+                      - author
+                    properties:
+                      _id:
+                        type: string
+                        example: '68498236a100312bea078fe6'
+                      img:
+                        type: string
+                        example: 'https://ftp.goit.study/img/harmoniq/f12e886489f94b5886d03e95vn.jpg'
+                        format: uri
+                      title:
+                        type: string
+                        example: 'When anxiety fills the space: the path to calm'
+                      author:
+                        type: string
+                        example: 'Oleksandra Bondarenko'
                 page:
                   type: number
                   example: 1
