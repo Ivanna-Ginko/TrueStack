@@ -5,6 +5,7 @@ import {
   removeArticleFromSaved,
   getCreatedArticlesOfUser,
   getSavedArticlesOfUser,
+  getTopUsersByArticlesRating,
 } from '../services/users.js';
 import createHttpError from 'http-errors';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
@@ -112,16 +113,17 @@ export const addArticleToSavedController = async (req, res) => {
     return res.status(404).json({ status: 404, message: 'Article not found' });
   }
 
+  if (!added) {
+    return res.status(409).json({
+      status: 409,
+      message: 'Article is already in saved articles',
+    });
+  }
+
   return res.status(200).json({
     status: 200,
-    message: added
-      ? 'Article added to saved articles successfully'
-      : 'Article is already in saved articles',
-    data: {
-      added,
-      article,
-      savedArticles: user.savedArticles,
-    },
+    message: 'Article added to saved articles successfully',
+    data: user.savedArticles,
   });
 };
 
@@ -131,9 +133,23 @@ export const removeArticleFromSavedController = async (req, res, next) => {
 
   const { savedArticleIds } = await removeArticleFromSaved(userId, articleId);
 
-  if (savedArticleIds.length === 0) {
+  if (!savedArticleIds || savedArticleIds.length === 0) {
     return res.status(204).send();
   }
 
-  res.status(200).json({ savedArticleIds });
+  return res.status(200).json({
+    status: 200,
+    message: 'Article successfully removed from saved list',
+    data: savedArticleIds,
+  });
+};
+
+export const getTopUsersByArticlesRatingController = async (req, res, next) => {
+  const users = await getTopUsersByArticlesRating();
+
+  res.json({
+    status: 200,
+    message: 'Successfully found top 6 users by articles rating',
+    data: users,
+  });
 };
