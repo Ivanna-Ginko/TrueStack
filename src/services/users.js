@@ -3,6 +3,7 @@ import { UsersCollection } from '../db/models/user.js';
 import createHttpError from 'http-errors';
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 import { updateRate } from './articles.js';
+import mongoose from 'mongoose';
 
 export const getAllUsers = async () => {
   const users = await UsersCollection.find();
@@ -51,7 +52,7 @@ export const getCreatedArticlesOfUser = async ({
 }) => {
   const skip = (page - 1) * perPage;
 
-  const query = { ownerId: userId };
+  const query = { ownerId: new mongoose.Types.ObjectId(userId) };
 
   const total = await ArticlesCollection.countDocuments(query);
 

@@ -48,7 +48,7 @@ router.delete(
 );
 
 router.get(
-  '/created-articles',
+  '/:userId/created-articles',
   ctrlWrapper(getCreatedArticlesOfUserController),
 );
 
