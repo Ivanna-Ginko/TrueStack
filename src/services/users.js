@@ -9,8 +9,15 @@ export const getAllUsers = async () => {
   return users;
 };
 
+// export const getUserById = async (userId) => {
+//   const user = await UsersCollection.findById(userId);
+//   return user;
+// };
+
 export const getUserById = async (userId) => {
-  const user = await UsersCollection.findById(userId);
+  const user = await UsersCollection.findById(userId).select(
+    'name email avatar',
+  );
   return user;
 };
 
@@ -78,27 +85,36 @@ export const addArticleToSaved = async ({ userId, articleId }) => {
     await updateRate(articleId, +1);
   }
 
-  const user = await UsersCollection.findById(userId).select('_id');
+  const user = await UsersCollection.findById(userId)
+    .select('_id savedArticles')
+    .lean();
+
   if (!user) return { user: null, article: null, added: false };
 
   const article = await ArticlesCollection.findById(articleId)
-    .select('title img author rate')
+    .select('title img author')
     .lean();
 
   return { user, article, added };
 };
 
 export const removeArticleFromSaved = async (userId, articleId) => {
-  const result = await UsersCollection.updateOne(
-    { _id: userId },
-    { $pull: { savedArticles: articleId } },
-  );
+  const user = await UsersCollection.findById(userId);
 
-  await updateRate(articleId, -1);
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
 
-  if (result.modifiedCount === 0) {
+  const wasSaved = user.savedArticles.includes(articleId);
+
+  if (!wasSaved) {
     throw createHttpError(404, 'Article not found in saved list');
   }
 
-  return true;
+  user.savedArticles.pull(articleId);
+  await user.save();
+
+  await updateRate(articleId, -1);
+
+  return { savedArticleIds: user.savedArticles };
 };

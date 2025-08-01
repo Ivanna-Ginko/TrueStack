@@ -917,7 +917,7 @@
         },
         "responses": {
           "200": {
-            "description": "Article added to saved articles successfully",
+            "description": "Article successfully added to saved articles",
             "content": {
               "application/json": {
                 "schema": {
@@ -940,7 +940,8 @@
                       "type": "object",
                       "required": [
                         "added",
-                        "article"
+                        "article",
+                        "savedArticles"
                       ],
                       "properties": {
                         "added": {
@@ -955,7 +956,7 @@
                             "_id",
                             "img",
                             "title",
-                            "rate"
+                            "author"
                           ],
                           "properties": {
                             "_id": {
@@ -965,6 +966,7 @@
                             },
                             "img": {
                               "type": "string",
+                              "format": "uri",
                               "description": "URL of the article's image",
                               "example": "https://ftp.goit.study/img/harmoniq/f12e886489f94b5886d03e95vn.jpg"
                             },
@@ -973,11 +975,18 @@
                               "description": "Title of the article",
                               "example": "When anxiety fills the space: the path to calm"
                             },
-                            "rate": {
-                              "type": "integer",
-                              "description": "Number of users who saved this article",
-                              "example": 16
+                            "author": {
+                              "type": "string",
+                              "description": "Author's name",
+                              "example": "Анастасія Олійник"
                             }
+                          }
+                        },
+                        "savedArticles": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "example": "68498236a100312bea078fef"
                           }
                         }
                       }
@@ -1006,7 +1015,7 @@
         ],
         "summary": "Remove article from list of saved articles",
         "operationId": "deleteArticle",
-        "description": "Remove saved article from the list of saved articles",
+        "description": "Remove saved article from the user's saved list. Returns updated list of saved article IDs or 204 if none remain",
         "security": [
           {
             "bearerAuth": []
@@ -1024,6 +1033,28 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "Article removed; returning updated list of saved articles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "savedArticleIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": [
+                        "6885053253a465a2060a9d8e",
+                        "6885053253a465a2060a9d96"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
           "204": {
             "description": "No content"
           },
@@ -1209,7 +1240,21 @@
                     },
                     "data": {
                       "type": "object",
-                      "$ref": "#/components/schemas/user"
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "example": "John Doe"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "j.doe@mail.com"
+                        },
+                        "avatar": {
+                          "type": "string",
+                          "format": "uri",
+                          "example": "https://ftp.goit.study/img/harmoniq/users/6881563901add19ee16fcff2.web…"
+                        }
+                      }
                     }
                   }
                 }
@@ -1541,49 +1586,6 @@
             "type": "string",
             "format": "date-time",
             "example": "2025-07-27T16:35:22.123Z"
-          }
-        }
-      },
-      "user": {
-        "type": "object",
-        "required": [
-          "_id",
-          "name",
-          "email"
-        ],
-        "properties": {
-          "_id": {
-            "description": "User's ID",
-            "type": "string",
-            "example": "6881563901add19ee16fcff2"
-          },
-          "name": {
-            "description": "User's name",
-            "type": "string",
-            "example": "John Doe"
-          },
-          "email": {
-            "description": "User's email",
-            "type": "string",
-            "example": "johndoe@example.com"
-          },
-          "avatar": {
-            "description": "User's photo URL",
-            "type": "string",
-            "example": "https://example.com/avatar.jpg"
-          },
-          "articlesAmount": {
-            "description": "Number of user's articles",
-            "type": "integer",
-            "example": 5
-          },
-          "savedArticles": {
-            "description": "IDs of articles saved by user",
-            "type": "array",
-            "items": {
-              "type": "string",
-              "example": "64b12c88a7d56ecb9f6e4301"
-            }
           }
         }
       }
