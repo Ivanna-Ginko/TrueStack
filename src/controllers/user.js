@@ -65,6 +65,8 @@ export const getSavedArticlesOfUserController = async (req, res, next) => {
 };
 
 export const getCreatedArticlesOfUserController = async (req, res, next) => {
+  console.log('userId from req.user:', req.user?._id);
+
   const userId = req.user?._id;
 
   const { page, perPage } = parsePaginationParams(req.query);
