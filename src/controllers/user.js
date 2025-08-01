@@ -5,6 +5,7 @@ import {
   removeArticleFromSaved,
   getCreatedArticlesOfUser,
   getSavedArticlesOfUser,
+  getTopUsersByArticlesRating,
 } from '../services/users.js';
 import createHttpError from 'http-errors';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
@@ -133,5 +134,15 @@ export const removeArticleFromSavedController = async (req, res, next) => {
     status: 200,
     message: 'Article successfully removed from saved list',
     data: savedArticleIds,
+  });
+};
+
+export const getTopUsersByArticlesRatingController = async (req, res, next) => {
+  const users = await getTopUsersByArticlesRating();
+
+  res.json({
+    status: 200,
+    message: 'Successfully found top 6 users by articles rating',
+    data: users,
   });
 };

@@ -9,11 +9,6 @@ export const getAllUsers = async () => {
   return users;
 };
 
-// export const getUserById = async (userId) => {
-//   const user = await UsersCollection.findById(userId);
-//   return user;
-// };
-
 export const getUserById = async (userId) => {
   const user = await UsersCollection.findById(userId).select(
     'name email avatar',
@@ -117,4 +112,37 @@ export const removeArticleFromSaved = async (userId, articleId) => {
   await updateRate(articleId, -1);
 
   return { savedArticleIds: user.savedArticles };
+};
+
+export const getTopUsersByArticlesRating = async () => {
+  const users = await UsersCollection.aggregate([
+    {
+      $lookup: {
+        from: 'articles',
+        localField: '_id',
+        foreignField: 'ownerId',
+        as: 'articles',
+      },
+    },
+    {
+      $addFields: {
+        totalRating: { $sum: '$articles.rate' },
+      },
+    },
+    {
+      $sort: { totalRating: -1 },
+    },
+    {
+      $limit: 6,
+    },
+    {
+      $project: {
+        name: 1,
+        avatar: 1,
+        totalRating: 1,
+      },
+    },
+  ]);
+
+  return users;
 };
