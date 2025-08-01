@@ -745,7 +745,7 @@
         }
       }
     },
-    "/user/saved-articles": {
+    "/users/saved-articles": {
       "get": {
         "tags": [
           "User"
@@ -818,7 +818,8 @@
                             "required": [
                               "_id",
                               "img",
-                              "title"
+                              "title",
+                              "author"
                             ],
                             "properties": {
                               "_id": {
@@ -833,6 +834,10 @@
                               "title": {
                                 "type": "string",
                                 "example": "When anxiety fills the space: the path to calm"
+                              },
+                              "author": {
+                                "type": "string",
+                                "example": "Oleksandra Bondarenko"
                               }
                             }
                           }
@@ -877,7 +882,7 @@
         }
       }
     },
-    "/user/saved-articles/add-article": {
+    "/users/saved-articles/add-article": {
       "post": {
         "tags": [
           "User"
@@ -966,10 +971,10 @@
                             "title": {
                               "type": "string",
                               "description": "Title of the article",
-                              "example": "'When anxiety fills the space: the path to calm"
+                              "example": "When anxiety fills the space: the path to calm"
                             },
                             "rate": {
-                              "type": "number",
+                              "type": "integer",
                               "description": "Number of users who saved this article",
                               "example": 16
                             }
@@ -994,7 +999,7 @@
         }
       }
     },
-    "/user/saved-articles/{articleId}": {
+    "/users/saved-articles/{articleId}": {
       "delete": {
         "tags": [
           "User"
@@ -1031,7 +1036,7 @@
         }
       }
     },
-    "/user/created-articles": {
+    "/users/created-articles": {
       "get": {
         "tags": [
           "User"
@@ -1096,7 +1101,32 @@
                         "items": {
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/article"
+                            "type": "object",
+                            "required": [
+                              "_id",
+                              "img",
+                              "title",
+                              "author"
+                            ],
+                            "properties": {
+                              "_id": {
+                                "type": "string",
+                                "example": "68498236a100312bea078fe6"
+                              },
+                              "img": {
+                                "type": "string",
+                                "example": "https://ftp.goit.study/img/harmoniq/f12e886489f94b5886d03e95vn.jpg",
+                                "format": "uri"
+                              },
+                              "title": {
+                                "type": "string",
+                                "example": "When anxiety fills the space: the path to calm"
+                              },
+                              "author": {
+                                "type": "string",
+                                "example": "Oleksandra Bondarenko"
+                              }
+                            }
                           }
                         },
                         "page": {
@@ -1136,7 +1166,7 @@
         }
       }
     },
-    "/user/{userId}": {
+    "/users/{userId}": {
       "get": {
         "tags": [
           "User"
