@@ -27,8 +27,8 @@
       "description": "Article operations."
     },
     {
-      "name": "User",
-      "description": "User operations."
+      "name": "Users",
+      "description": "Users operations."
     }
   ],
   "paths": {
@@ -745,10 +745,194 @@
         }
       }
     },
+    "/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get all users",
+        "operationId": "getAllUsers",
+        "description": "Returns list of users with pagination and sorting options. Default sorting is by popularity (totalRate). Available sort options: `popularity`, `name`, `articlesAmount`.",
+        "security": [],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1,
+              "example": 1
+            },
+            "description": "Page number for pagination"
+          },
+          {
+            "in": "query",
+            "name": "perPage",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "minimum": 1,
+              "example": 6
+            },
+            "description": "Number of users per page"
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "popularity",
+                "name",
+                "articlesAmount"
+              ],
+              "default": "popularity",
+              "example": "popularity"
+            },
+            "description": "Field by which to sort users"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully found users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data",
+                    "pagination",
+                    "meta"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found users"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "_id",
+                          "name",
+                          "avatarUrl",
+                          "articlesAmount",
+                          "totalRate"
+                        ],
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "68498236a100312bea078fe6"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "John Doe"
+                          },
+                          "avatarUrl": {
+                            "type": "string",
+                            "format": "uri",
+                            "example": "https://example.com/avatar.jpg"
+                          },
+                          "articlesAmount": {
+                            "type": "integer",
+                            "example": 5
+                          },
+                          "totalRate": {
+                            "type": "number",
+                            "example": 24
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "required": [
+                        "page",
+                        "perPage",
+                        "totalItems",
+                        "totalPage",
+                        "hasPreviousPage",
+                        "hasNextPage"
+                      ],
+                      "properties": {
+                        "page": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "perPage": {
+                          "type": "integer",
+                          "example": 20
+                        },
+                        "totalItems": {
+                          "type": "integer",
+                          "example": 104
+                        },
+                        "totalPage": {
+                          "type": "integer",
+                          "example": 6
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "example": true
+                        }
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "required": [
+                        "sortBy",
+                        "sortOptions",
+                        "defaultSort"
+                      ],
+                      "properties": {
+                        "sortBy": {
+                          "type": "string",
+                          "example": "popularity"
+                        },
+                        "sortOptions": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "example": [
+                            "popularity",
+                            "name",
+                            "articlesAmount"
+                          ]
+                        },
+                        "defaultSort": {
+                          "type": "string",
+                          "example": "popularity"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          }
+        }
+      }
+    },
     "/users/saved-articles": {
       "get": {
         "tags": [
-          "User"
+          "Users"
         ],
         "summary": "Get list of articles saved by current user",
         "operationId": "getSavedArticles",
@@ -788,7 +972,8 @@
                   "required": [
                     "status",
                     "message",
-                    "data"
+                    "data",
+                    "pagination"
                   ],
                   "properties": {
                     "status": {
@@ -800,62 +985,66 @@
                       "example": "Successfully found saved articles!"
                     },
                     "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "_id",
+                          "img",
+                          "title",
+                          "author",
+                          "article"
+                        ],
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "68498236a100312bea078fe6"
+                          },
+                          "img": {
+                            "type": "string",
+                            "example": "https://ftp.goit.study/img/harmoniq/f12e886489f94b5886d03e95vn.jpg",
+                            "format": "uri"
+                          },
+                          "title": {
+                            "type": "string",
+                            "example": "When anxiety fills the space: the path to calm"
+                          },
+                          "author": {
+                            "type": "string",
+                            "example": "Oleksandra Bondarenko"
+                          },
+                          "article": {
+                            "type": "string",
+                            "example": "У кожного з нас бувають моменти, коли тривога наче туман огортає думки…"
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
                       "type": "object",
                       "required": [
-                        "items",
                         "page",
                         "perPage",
                         "totalItems",
-                        "totalPages",
+                        "totalPage",
                         "hasNextPage",
                         "hasPreviousPage"
                       ],
                       "properties": {
-                        "items": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "required": [
-                              "_id",
-                              "img",
-                              "title",
-                              "author"
-                            ],
-                            "properties": {
-                              "_id": {
-                                "type": "string",
-                                "example": "68498236a100312bea078fe6"
-                              },
-                              "img": {
-                                "type": "string",
-                                "example": "https://ftp.goit.study/img/harmoniq/f12e886489f94b5886d03e95vn.jpg",
-                                "format": "uri"
-                              },
-                              "title": {
-                                "type": "string",
-                                "example": "When anxiety fills the space: the path to calm"
-                              },
-                              "author": {
-                                "type": "string",
-                                "example": "Oleksandra Bondarenko"
-                              }
-                            }
-                          }
-                        },
                         "page": {
-                          "type": "number",
+                          "type": "integer",
                           "example": 1
                         },
                         "perPage": {
-                          "type": "number",
+                          "type": "integer",
                           "example": 12
                         },
                         "totalItems": {
-                          "type": "number",
+                          "type": "integer",
                           "example": 5
                         },
-                        "totalPages": {
-                          "type": "number",
+                        "totalPage": {
+                          "type": "integer",
                           "example": 1
                         },
                         "hasNextPage": {
@@ -880,12 +1069,10 @@
             "$ref": "#/components/responses/404-2"
           }
         }
-      }
-    },
-    "/users/saved-articles/add-article": {
+      },
       "post": {
         "tags": [
-          "User"
+          "Users"
         ],
         "summary": "Add article to saved list",
         "operationId": "addArticleToSaved",
@@ -934,61 +1121,13 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Successfully added the article to saved!"
+                      "example": "Article added to saved articles successfully"
                     },
                     "data": {
-                      "type": "object",
-                      "required": [
-                        "added",
-                        "article",
-                        "savedArticles"
-                      ],
-                      "properties": {
-                        "added": {
-                          "type": "boolean",
-                          "description": "If the article is successfully added",
-                          "example": true
-                        },
-                        "article": {
-                          "type": "object",
-                          "description": "Short article information",
-                          "required": [
-                            "_id",
-                            "img",
-                            "title",
-                            "author"
-                          ],
-                          "properties": {
-                            "_id": {
-                              "type": "string",
-                              "description": "Article ID",
-                              "example": "68498236a100312bea078fe6"
-                            },
-                            "img": {
-                              "type": "string",
-                              "format": "uri",
-                              "description": "URL of the article's image",
-                              "example": "https://ftp.goit.study/img/harmoniq/f12e886489f94b5886d03e95vn.jpg"
-                            },
-                            "title": {
-                              "type": "string",
-                              "description": "Title of the article",
-                              "example": "When anxiety fills the space: the path to calm"
-                            },
-                            "author": {
-                              "type": "string",
-                              "description": "Author's name",
-                              "example": "Анастасія Олійник"
-                            }
-                          }
-                        },
-                        "savedArticles": {
-                          "type": "array",
-                          "items": {
-                            "type": "string",
-                            "example": "68498236a100312bea078fef"
-                          }
-                        }
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "example": "6885053253a465a2060a9d9f"
                       }
                     }
                   }
@@ -997,13 +1136,16 @@
             }
           },
           "400": {
-            "$ref": "#/components/responses/400"
+            "$ref": "#/components/responses/400-2"
           },
           "401": {
             "$ref": "#/components/responses/401"
           },
           "404": {
             "$ref": "#/components/responses/404-2"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
           }
         }
       }
@@ -1011,7 +1153,7 @@
     "/users/saved-articles/{articleId}": {
       "delete": {
         "tags": [
-          "User"
+          "Users"
         ],
         "summary": "Remove article from list of saved articles",
         "operationId": "deleteArticle",
@@ -1039,15 +1181,27 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
                   "properties": {
-                    "savedArticleIds": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Article successfully removed from saved list"
+                    },
+                    "data": {
                       "type": "array",
                       "items": {
                         "type": "string"
                       },
                       "example": [
-                        "6885053253a465a2060a9d8e",
-                        "6885053253a465a2060a9d96"
+                        "6885053253a465a2060a9d9f"
                       ]
                     }
                   }
@@ -1056,7 +1210,7 @@
             }
           },
           "204": {
-            "description": "No content"
+            "description": "No content (no saved articles left)"
           },
           "401": {
             "$ref": "#/components/responses/401-2"
@@ -1249,7 +1403,7 @@
                           "type": "string",
                           "example": "j.doe@mail.com"
                         },
-                        "avatar": {
+                        "avatarUrl": {
                           "type": "string",
                           "format": "uri",
                           "example": "https://ftp.goit.study/img/harmoniq/users/6881563901add19ee16fcff2.web…"
@@ -1322,7 +1476,7 @@
                       "example": "john12345@gmail.com",
                       "description": "User's email"
                     },
-                    "avatar": {
+                    "avatarUrl": {
                       "type": "string",
                       "format": "uri",
                       "example": "https://res.cloudinary.com/dgce49ndc/image/upload/v1752447915/ar3ps6z0sbxexlj7spgg",
@@ -1362,7 +1516,7 @@
         }
       },
       "400": {
-        "description": "Invalid input or article already saved",
+        "description": "Bad request – invalid query parameters",
         "content": {
           "application/json": {
             "schema": {
@@ -1374,13 +1528,11 @@
               "properties": {
                 "status": {
                   "type": "integer",
-                  "description": "HTTP status code",
                   "example": 400
                 },
                 "message": {
                   "type": "string",
-                  "description": "Error message",
-                  "example": "Article already in saved list"
+                  "example": "Invalid pagination parameters"
                 }
               }
             }
@@ -1461,6 +1613,30 @@
           }
         }
       },
+      "409": {
+        "description": "Conflict - article already saved",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 409
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Article is already in saved articles"
+                }
+              }
+            }
+          }
+        }
+      },
       "404-2": {
         "description": "Not found error",
         "content": {
@@ -1516,6 +1692,32 @@
                 "message": {
                   "type": "string",
                   "example": "Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      },
+      "400-2": {
+        "description": "Invalid input or article already saved",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "description": "HTTP status code",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "description": "Error message",
+                  "example": "Article already in saved list"
                 }
               }
             }

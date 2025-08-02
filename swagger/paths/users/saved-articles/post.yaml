@@ -1,0 +1,67 @@
+tags:
+  - Users
+summary: Add article to saved list
+operationId: addArticleToSaved
+description: 'Add an existing article to the list of saved articles'
+security:
+  - bearerAuth: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - articleId
+        properties:
+          articleId:
+            description: 'The ID of the article to be added to saved list'
+            type: string
+            example: '68498236a100312bea078fe6'
+
+responses:
+  '200':
+    description: 'Article successfully added to saved articles'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: 'Article added to saved articles successfully'
+            data:
+              type: array
+              description: List of saved article IDs after addition
+              items:
+                type: string
+                example: '6885053253a465a2060a9d9f'
+  '400':
+    description: Invalid input data
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 400
+            message:
+              type: string
+              example: 'ArticleId is required'
+  '401':
+    $ref: ../../../components/responses/401.yaml
+  '404':
+    $ref: ../../../components/responses/404.yaml
+  '409':
+    $ref: ../../../components/responses/user/409.yaml

@@ -89,7 +89,7 @@ export const getSavedArticlesOfUserController = async (req, res, next) => {
 };
 
 export const getCreatedArticlesOfUserController = async (req, res, next) => {
-  const userId = req.query.userId || req.params.userId;
+  const userId = req.params.userId;
 
   if (!userId) {
     return res.status(400).json({
