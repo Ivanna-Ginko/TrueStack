@@ -58,10 +58,13 @@ export const getSavedArticlesOfUserController = async (req, res, next) => {
     return res.status(404).json({ message: 'User not found' });
   }
 
+  const { items, ...pagination } = result;
+
   res.json({
     status: 200,
     message: 'Successfully found saved articles',
-    data: result,
+    data: items,
+    pagination,
   });
 };
 
