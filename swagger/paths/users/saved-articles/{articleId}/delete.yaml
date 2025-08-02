@@ -1,5 +1,5 @@
 tags:
-  - User
+  - Users
 summary: Remove article from list of saved articles
 operationId: deleteArticle
 description: "Remove saved article from the user's saved list. Returns updated list of saved article IDs or 204 if none remain"
@@ -19,16 +19,25 @@ responses:
       application/json:
         schema:
           type: object
+          required:
+            - status
+            - message
+            - data
           properties:
-            savedArticleIds:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Article successfully removed from saved list
+            data:
               type: array
               items:
                 type: string
               example:
-                - '6885053253a465a2060a9d8e'
-                - '6885053253a465a2060a9d96'
+                - '6885053253a465a2060a9d9f'
   '204':
-    description: 'No content'
+    description: 'No content (no saved articles left)'
   '401':
     $ref: ../../../../components/responses/user/401.yaml
   '404':
