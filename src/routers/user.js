@@ -4,7 +4,7 @@ import {
   getSavedArticlesOfUserController,
   getCreatedArticlesOfUserController,
   getUserByIdController,
-  getUsersController,
+  getAllUsersController,
   removeArticleFromSavedController,
   getMe,
   getTopUsersByArticlesRatingController,
@@ -18,7 +18,7 @@ import { addArticleToSavedSchema } from '../validation/articles.js';
 
 const router = Router();
 
-router.get('/', ctrlWrapper(getUsersController));
+router.get('/', ctrlWrapper(getAllUsersController));
 
 router.get('/me', authenticate, ctrlWrapper(getMe));
 

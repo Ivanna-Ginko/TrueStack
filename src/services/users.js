@@ -5,9 +5,59 @@ import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 import { updateRate } from './articles.js';
 import mongoose from 'mongoose';
 
-export const getAllUsers = async () => {
-  const users = await UsersCollection.find();
-  return users;
+export const getAllUsers = async ({
+  page = 1,
+  perPage = 6,
+  sortBy = 'popularity',
+}) => {
+  const skip = (page - 1) * perPage;
+
+  const sortFieldsMap = {
+    popularity: { totalRate: -1 },
+    name: { name: 1 },
+    articlesAmount: { articlesAmount: -1 },
+  };
+
+  const sortOptions = sortFieldsMap[sortBy] || sortFieldsMap.popularity;
+
+  const aggregationPipeline = [
+    {
+      $lookup: {
+        from: 'articles',
+        localField: '_id',
+        foreignField: 'ownerId',
+        as: 'articles',
+      },
+    },
+    {
+      $addFields: {
+        totalRate: { $sum: '$articles.rate' },
+      },
+    },
+    {
+      $project: {
+        name: 1,
+        avatarUrl: 1,
+        articlesAmount: 1,
+        totalRate: { $ifNull: ['$totalRate', 0] },
+      },
+    },
+    {
+      $sort: sortOptions,
+    },
+    {
+      $skip: skip,
+    },
+    {
+      $limit: perPage,
+    },
+  ];
+
+  const users = await UsersCollection.aggregate(aggregationPipeline);
+
+  const totalUsersCount = await UsersCollection.countDocuments();
+
+  return { users, totalUsersCount };
 };
 
 export const getUserById = async (userId) => {
@@ -137,9 +187,9 @@ export const getTopUsersByArticlesRating = async () => {
     {
       $sort: { totalRating: -1 },
     },
-    {
-      $limit: 6,
-    },
+    // {
+    //   $limit: 6,
+    // },
     {
       $project: {
         name: 1,

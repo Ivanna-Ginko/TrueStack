@@ -9,14 +9,35 @@ import {
 } from '../services/users.js';
 import createHttpError from 'http-errors';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 
-export const getUsersController = async (req, res, next) => {
-  const users = await getAllUsers();
+export const getAllUsersController = async (req, res, next) => {
+  let { page, perPage } = parsePaginationParams(req.query);
 
-  res.json({
+  if (!req.query.perPage) {
+    perPage = 6;
+  }
+
+  const sortBy = req.query.sortBy || 'popularity';
+
+  const { users, totalUsersCount } = await getAllUsers({
+    page,
+    perPage,
+    sortBy,
+  });
+
+  const pagination = calculatePaginationData(totalUsersCount, perPage, page);
+
+  res.status(200).json({
     status: 200,
     message: 'Successfully found users',
     data: users,
+    pagination,
+    meta: {
+      sortBy,
+      sortOptions: ['popularity', 'name', 'articlesAmount'],
+      defaultSort: 'popularity',
+    },
   });
 };
 
