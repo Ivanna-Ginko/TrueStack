@@ -7,7 +7,7 @@ import mongoose from 'mongoose';
 
 export const getAllUsers = async ({
   page = 1,
-  perPage = 6,
+  perPage = 20,
   sortBy = 'popularity',
 }) => {
   const skip = (page - 1) * perPage;
@@ -167,37 +167,4 @@ export const removeArticleFromSaved = async (userId, articleId) => {
   await updateRate(articleId, -1);
 
   return { savedArticleIds: user.savedArticles };
-};
-
-export const getTopUsersByArticlesRating = async () => {
-  const users = await UsersCollection.aggregate([
-    {
-      $lookup: {
-        from: 'articles',
-        localField: '_id',
-        foreignField: 'ownerId',
-        as: 'articles',
-      },
-    },
-    {
-      $addFields: {
-        totalRating: { $sum: '$articles.rate' },
-      },
-    },
-    {
-      $sort: { totalRating: -1 },
-    },
-    // {
-    //   $limit: 6,
-    // },
-    {
-      $project: {
-        name: 1,
-        avatarUrl: 1,
-        totalRating: 1,
-      },
-    },
-  ]);
-
-  return users;
 };

@@ -7,7 +7,6 @@ import {
   getAllUsersController,
   removeArticleFromSavedController,
   getMe,
-  getTopUsersByArticlesRatingController,
 } from '../controllers/user.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { isValidId } from '../middlewares/isValidId.js';
@@ -21,11 +20,6 @@ const router = Router();
 router.get('/', ctrlWrapper(getAllUsersController));
 
 router.get('/me', authenticate, ctrlWrapper(getMe));
-
-router.get(
-  '/top-by-articles-rating',
-  ctrlWrapper(getTopUsersByArticlesRatingController),
-);
 
 router.get(
   '/saved-articles',
