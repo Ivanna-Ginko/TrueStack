@@ -38,7 +38,7 @@ responses:
                 email:
                   type: string
                   example: 'j.doe@mail.com'
-                avatar:
+                avatarUrl:
                   type: string
                   format: uri
                   example: 'https://ftp.goit.study/img/harmoniq/users/6881563901add19ee16fcff2.web…'
