@@ -1,13 +1,14 @@
 tags:
-  - User
-summary: Get user by id
+  - Users
+summary: Get user by ID
 operationId: getUserById
-description: 'Get user by their unique ID'
+description: 'Returns basic info about user by their unique ID'
 security: []
 parameters:
   - in: path
     name: userId
     required: true
+    description: Unique identifier of the user
     schema:
       type: string
       example: '6881563901add19ee16fcff2'
@@ -31,7 +32,15 @@ responses:
               example: 'Successfully found user with id 6881563901add19ee16fcff2!'
             data:
               type: object
+              required:
+                - _id
+                - name
+                - email
+                - avatarUrl
               properties:
+                _id:
+                  type: string
+                  example: '688bdb08d727567cd45df13e'
                 name:
                   type: string
                   example: 'John Doe'
