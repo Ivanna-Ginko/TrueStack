@@ -36,7 +36,7 @@ content:
               format: email
               example: 'john12345@gmail.com'
               description: User's email
-            avatar:
+            avatarUrl:
               type: string
               format: uri
               example: 'https://res.cloudinary.com/dgce49ndc/image/upload/v1752447915/ar3ps6z0sbxexlj7spgg'
@@ -51,3 +51,14 @@ content:
               format: date-time
               example: 2025-07-26T12:18:02.095Z
               description: User update date
+            accessToken:
+              type: string
+              description: Access token
+              example: 'NuB85QNMA+UUUZWUdSPZ+mRyeVIaJfAkONkajoXn'
+            savedArticles:
+              type: array
+              description: List of user`s saved articles
+            articlesAmount:
+              type: integer
+              description: Number of articles added by the user
+              example: 4

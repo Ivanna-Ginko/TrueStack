@@ -1,0 +1,95 @@
+tags:
+  - User
+summary: Get list of articles saved by current user
+operationId: getSavedArticles
+description: 'Returns a paginated list of articles saved by the currently authenticated user'
+security:
+  - bearerAuth: []
+
+parameters:
+  - in: query
+    name: page
+    schema:
+      type: integer
+      example: 1
+    description: 'Page number for pagination'
+  - in: query
+    name: perPage
+    schema:
+      type: integer
+      example: 12
+    description: 'Number of articles per page'
+responses:
+  '200':
+    description: Successfully found saved articles!
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully found saved articles!
+            data:
+              type: object
+              required:
+                - items
+                - page
+                - perPage
+                - totalItems
+                - totalPages
+                - hasNextPage
+                - hasPreviousPage
+              properties:
+                items:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - _id
+                      - img
+                      - title
+                      - author
+                    properties:
+                      _id:
+                        type: string
+                        example: '68498236a100312bea078fe6'
+                      img:
+                        type: string
+                        example: 'https://ftp.goit.study/img/harmoniq/f12e886489f94b5886d03e95vn.jpg'
+                        format: uri
+                      title:
+                        type: string
+                        example: 'When anxiety fills the space: the path to calm'
+                      author:
+                        type: string
+                        example: 'Oleksandra Bondarenko'
+                page:
+                  type: number
+                  example: 1
+                perPage:
+                  type: number
+                  example: 12
+                totalItems:
+                  type: number
+                  example: 5
+                totalPages:
+                  type: number
+                  example: 1
+                hasNextPage:
+                  type: boolean
+                  example: false
+                hasPreviousPage:
+                  type: boolean
+                  example: false
+  '401':
+    $ref: '../../../components/responses/user/401.yaml'
+  '404':
+    $ref: '../../../components/responses/404.yaml'

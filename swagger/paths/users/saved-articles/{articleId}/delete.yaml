@@ -1,0 +1,35 @@
+tags:
+  - User
+summary: Remove article from list of saved articles
+operationId: deleteArticle
+description: "Remove saved article from the user's saved list. Returns updated list of saved article IDs or 204 if none remain"
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: articleId
+    required: true
+    schema:
+      type: string
+      example: '68498236a100312bea078fe6'
+responses:
+  '200':
+    description: 'Article removed; returning updated list of saved articles'
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            savedArticleIds:
+              type: array
+              items:
+                type: string
+              example:
+                - '6885053253a465a2060a9d8e'
+                - '6885053253a465a2060a9d96'
+  '204':
+    description: 'No content'
+  '401':
+    $ref: ../../../../components/responses/user/401.yaml
+  '404':
+    $ref: ../../../../components/responses/404.yaml

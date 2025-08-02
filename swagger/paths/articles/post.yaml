@@ -1,0 +1,66 @@
+#/swagger/paths/articles/post.yaml
+
+tags:
+  - Articles
+summary: Create article
+operationId: createArticle
+description: 'Create a new article with payload'
+security:
+  - bearerAuth: []
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        required:
+          - img
+          - title
+          - article
+          - author
+          - date
+        properties:
+          img:
+            type: string
+            format: binary
+            example: https://res.cloudinary.com/uqwgdu/image/upload/image.png
+          title:
+            type: string
+            minLength: 3
+            maxLength: 48
+            example: 'Сила тиші: як медитація лікує душу'
+          article:
+            type: string
+            minLength: 100
+            maxLength: 4000
+            example: 'Іноді тиша мовчить голосніше за будь-які слова. У світі, сповненому шу…'
+          author:
+            type: string
+            minLength: 2
+            maxLength: 50
+            example: 'Назар Ткаченко'
+          date:
+            type: string
+            example: '2025-07-27'
+responses:
+  '201':
+    description: Creates a article
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 201
+            message:
+              type: string
+              example: Successfully created an article!
+            data:
+              type: object
+              $ref: '../../components/schemas/article.yaml'
+  '401':
+    $ref: '../../components/responses/401.yaml'

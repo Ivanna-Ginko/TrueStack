@@ -45,6 +45,34 @@ responses:
                 accessToken:
                   type: string
                   example: 'NuB85QNMA+UUUZWUdSPZ+mRyeVIaJfAkONkajoXn'
+                user:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: 'John'
+                      description: User's name
+                    email:
+                      type: string
+                      format: email
+                      example: 'john12345@gmail.com'
+                      description: User's email
+                    _id:
+                      type: string
+                      example: '65ca67e7ae7f10c88b598384'
+                      description: User ID
+                    avatar:
+                      type: string
+                      format: uri
+                      example: 'https://res.cloudinary.com/dgce49ndc/image/upload/v1752447915/ar3ps6z0sbxexlj7spgg'
+                      description: URL to user's avatar image
+                    savedArticles:
+                      type: array
+                      description: List of user`s saved articles
+                    articlesAmount:
+                      type: integer
+                      description: number of articles added by the user
+                      example: 4
   '401':
     $ref: '../../../components/responses/401.yaml'
   '404':
