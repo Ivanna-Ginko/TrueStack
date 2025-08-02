@@ -86,10 +86,19 @@ export const getCreatedArticlesOfUserController = async (req, res, next) => {
     perPage,
   });
 
+  if (!result.items.length) {
+    return res
+      .status(404)
+      .json({ message: 'There are no created articles by this user' });
+  }
+
+  const { items, ...pagination } = result;
+
   res.status(200).json({
     status: 200,
     message: 'Successfully found created articles',
-    data: result,
+    data: items,
+    pagination,
   });
 };
 
