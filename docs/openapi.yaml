@@ -55,13 +55,12 @@ paths:
     delete:
       $ref: ../swagger/paths/users/saved-articles/{articleId}/delete.yaml
 
-  /users/created-articles:
-    get:
-      $ref: ../swagger/paths/users/created-articles/get.yaml
-
   /users/{userId}:
     get:
       $ref: ../swagger/paths/users/{userId}/get.yaml
+  /users/{userId}/created-articles:
+    get:
+      $ref: ../swagger/paths/users/{userId}/created-articles/get.yaml
 components:
   securitySchemes:
     bearerAuth:

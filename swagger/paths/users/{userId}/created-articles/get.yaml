@@ -1,0 +1,101 @@
+tags:
+  - Users
+summary: Get list of articles created by a specific user
+operationId: getCreatedArticles
+description: 'Returns a paginated list of articles created by a specific user'
+security: []
+parameters:
+  - in: path
+    name: userId
+    required: true
+    description: 'ID of a specific user'
+    schema:
+      type: string
+      example: '6885053253a465a2060a9d78'
+  - in: query
+    name: page
+    description: 'Page number for pagination'
+    schema:
+      type: integer
+      example: 1
+  - in: query
+    name: perPage
+    description: 'Number of articles per page'
+    schema:
+      type: integer
+      example: 12
+responses:
+  '200':
+    description: Successfully found created articles!
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+            - pagination
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully found created articles
+            data:
+              type: array
+              minItems: 0
+              items:
+                type: object
+                required:
+                  - _id
+                  - img
+                  - title
+                  - author
+                properties:
+                  _id:
+                    type: string
+                    example: '68498236a100312bea078fe6'
+                  img:
+                    type: string
+                    example: 'https://ftp.goit.study/img/harmoniq/f12e886489f94b5886d03e95vn.jpg'
+                    format: uri
+                  title:
+                    type: string
+                    example: 'When anxiety fills the space: the path to calm'
+                  author:
+                    type: string
+                    example: 'Oleksandra Bondarenko'
+            pagination:
+              type: object
+              required:
+                - page
+                - perPage
+                - totalItems
+                - totalPage
+                - hasNextPage
+                - hasPreviousPage
+              properties:
+                page:
+                  type: integer
+                  example: 1
+                perPage:
+                  type: integer
+                  example: 12
+                totalItems:
+                  type: integer
+                  example: 1
+                totalPage:
+                  type: integer
+                  example: 1
+                hasNextPage:
+                  type: boolean
+                  example: false
+                hasPreviousPage:
+                  type: boolean
+                  example: false
+  '400':
+    $ref: ../../../../components/responses/user/400.yaml
+  '404':
+    $ref: ../../../../components/responses/404.yaml
