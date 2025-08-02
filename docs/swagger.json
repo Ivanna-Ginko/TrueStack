@@ -12,12 +12,23 @@
   "servers": [
     {
       "url": "http://localhost:3000"
+    },
+    {
+      "url": "https://truestack.onrender.com"
     }
   ],
   "tags": [
     {
       "name": "Auth",
       "description": "Auth operations."
+    },
+    {
+      "name": "Articles",
+      "description": "Article operations."
+    },
+    {
+      "name": "User",
+      "description": "User operations."
     }
   ],
   "paths": {
@@ -140,7 +151,43 @@
                       "properties": {
                         "accessToken": {
                           "type": "string",
-                          "example": "M1EiD54qm+x+1+CsC00DpDhukXd1pJaJGYGX0iMv"
+                          "example": "NuB85QNMA+UUUZWUdSPZ+mRyeVIaJfAkONkajoXn"
+                        },
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "example": "John",
+                              "description": "User's name"
+                            },
+                            "email": {
+                              "type": "string",
+                              "format": "email",
+                              "example": "john12345@gmail.com",
+                              "description": "User's email"
+                            },
+                            "_id": {
+                              "type": "string",
+                              "example": "65ca67e7ae7f10c88b598384",
+                              "description": "User ID"
+                            },
+                            "avatar": {
+                              "type": "string",
+                              "format": "uri",
+                              "example": "https://res.cloudinary.com/dgce49ndc/image/upload/v1752447915/ar3ps6z0sbxexlj7spgg",
+                              "description": "URL to user's avatar image"
+                            },
+                            "savedArticles": {
+                              "type": "array",
+                              "description": "List of user`s saved articles"
+                            },
+                            "articlesAmount": {
+                              "type": "integer",
+                              "description": "number of articles added by the user",
+                              "example": 4
+                            }
+                          }
                         }
                       }
                     }
@@ -223,7 +270,43 @@
                       "properties": {
                         "accessToken": {
                           "type": "string",
-                          "example": "Y/ja2tZ1abSAnC/lEJRiutLgz9vAnsD0r/qe6Dcb"
+                          "example": "WVn+tAb/RgXdlZpPh/J2JKAT5hDuYf3kBYS/a4aa"
+                        },
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "example": "John",
+                              "description": "User's name"
+                            },
+                            "email": {
+                              "type": "string",
+                              "format": "email",
+                              "example": "john12345@gmail.com",
+                              "description": "User's email"
+                            },
+                            "_id": {
+                              "type": "string",
+                              "example": "65ca67e7ae7f10c88b598384",
+                              "description": "User ID"
+                            },
+                            "avatar": {
+                              "type": "string",
+                              "format": "uri",
+                              "example": "https://res.cloudinary.com/dgce49ndc/image/upload/v1752447915/ar3ps6z0sbxexlj7spgg",
+                              "description": "URL to user's avatar image"
+                            },
+                            "savedArticles": {
+                              "type": "array",
+                              "description": "List of user`s saved articles"
+                            },
+                            "articlesAmount": {
+                              "type": "integer",
+                              "description": "number of articles added by the user",
+                              "example": 4
+                            }
+                          }
                         }
                       }
                     }
@@ -234,6 +317,952 @@
           },
           "401": {
             "$ref": "#/components/responses/401"
+          }
+        }
+      }
+    },
+    "/articles/{articleId}": {
+      "get": {
+        "tags": [
+          "Articles"
+        ],
+        "summary": "Get article",
+        "operationId": "getArticleById",
+        "description": "Get article by id",
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "articleId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "84fs58rt61hs82gi5y8ch691"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully found article!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found article!"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/article"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404-2"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Articles"
+        ],
+        "summary": "Update article",
+        "operationId": "updateArticleById",
+        "description": "Update article by its unique if.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "articleId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "84fs58rt61hs82gi5y8ch691"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "img": {
+                    "type": "string",
+                    "format": "binary",
+                    "example": "https://res.cloudinary.com/uqwgdu/image/upload/image.png"
+                  },
+                  "title": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 48,
+                    "example": "Сила тиші: як медитація лікує душу"
+                  },
+                  "article": {
+                    "type": "string",
+                    "minLength": 100,
+                    "maxLength": 4000,
+                    "example": "Іноді тиша мовчить голосніше за будь-які слова. У світі, сповненому шу…"
+                  },
+                  "rate": {
+                    "type": "number",
+                    "example": 15,
+                    "minimum": 0
+                  },
+                  "author": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 50,
+                    "example": "Назар Ткаченко"
+                  },
+                  "date": {
+                    "type": "string",
+                    "example": "2025-07-27"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully patched an article!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully patched an article!"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/article"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-2"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Articles"
+        ],
+        "summary": "Delete article",
+        "operationId": "deleteArticleById",
+        "description": "Delete a contact by its unique if. Requires authorization and ownership.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "articleId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "84fs58rt61hs82gi5y8ch691"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Article successfully deleted. No content returned."
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-2"
+          }
+        }
+      }
+    },
+    "/articles": {
+      "post": {
+        "tags": [
+          "Articles"
+        ],
+        "summary": "Create article",
+        "operationId": "createArticle",
+        "description": "Create a new article with payload",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "img",
+                  "title",
+                  "article",
+                  "author",
+                  "date"
+                ],
+                "properties": {
+                  "img": {
+                    "type": "string",
+                    "format": "binary",
+                    "example": "https://res.cloudinary.com/uqwgdu/image/upload/image.png"
+                  },
+                  "title": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 48,
+                    "example": "Сила тиші: як медитація лікує душу"
+                  },
+                  "article": {
+                    "type": "string",
+                    "minLength": 100,
+                    "maxLength": 4000,
+                    "example": "Іноді тиша мовчить голосніше за будь-які слова. У світі, сповненому шу…"
+                  },
+                  "author": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 50,
+                    "example": "Назар Ткаченко"
+                  },
+                  "date": {
+                    "type": "string",
+                    "example": "2025-07-27"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creates a article",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 201
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully created an article!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/article"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Articles"
+        ],
+        "summary": "Get list of articles",
+        "operationId": "getArticles",
+        "description": "Get list of articles",
+        "security": [],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            },
+            "example": 1
+          },
+          {
+            "in": "query",
+            "name": "perPage",
+            "schema": {
+              "type": "integer",
+              "example": 12
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "createdAt",
+                "rate"
+              ],
+              "example": "rate"
+            },
+            "description": "Field to sort by. Default is `createdAt`."
+          },
+          {
+            "in": "query",
+            "name": "sortOrder",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "example": "asc"
+            },
+            "description": "Sorting direction. Default is `desc`."
+          },
+          {
+            "in": "query",
+            "name": "ownerId",
+            "schema": {
+              "type": "string",
+              "example": "65e4aabbccee33001122ff77"
+            },
+            "description": "Filter by author"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully found articles!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found articles!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "data",
+                        "page",
+                        "perPage",
+                        "totalItems",
+                        "totalPages",
+                        "hasNextPage",
+                        "hasPreviousPage"
+                      ],
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/article"
+                          }
+                        },
+                        "page": {
+                          "type": "number",
+                          "example": 2
+                        },
+                        "perPage": {
+                          "type": "number",
+                          "example": 12
+                        },
+                        "totalItems": {
+                          "type": "number",
+                          "example": 48
+                        },
+                        "totalPages": {
+                          "type": "number",
+                          "example": 4
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean",
+                          "example": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404-2"
+          }
+        }
+      }
+    },
+    "/users/saved-articles": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get list of articles saved by current user",
+        "operationId": "getSavedArticles",
+        "description": "Returns a paginated list of articles saved by the currently authenticated user",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            },
+            "description": "Page number for pagination"
+          },
+          {
+            "in": "query",
+            "name": "perPage",
+            "schema": {
+              "type": "integer",
+              "example": 12
+            },
+            "description": "Number of articles per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully found saved articles!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found saved articles!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "items",
+                        "page",
+                        "perPage",
+                        "totalItems",
+                        "totalPages",
+                        "hasNextPage",
+                        "hasPreviousPage"
+                      ],
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "required": [
+                              "_id",
+                              "img",
+                              "title",
+                              "author"
+                            ],
+                            "properties": {
+                              "_id": {
+                                "type": "string",
+                                "example": "68498236a100312bea078fe6"
+                              },
+                              "img": {
+                                "type": "string",
+                                "example": "https://ftp.goit.study/img/harmoniq/f12e886489f94b5886d03e95vn.jpg",
+                                "format": "uri"
+                              },
+                              "title": {
+                                "type": "string",
+                                "example": "When anxiety fills the space: the path to calm"
+                              },
+                              "author": {
+                                "type": "string",
+                                "example": "Oleksandra Bondarenko"
+                              }
+                            }
+                          }
+                        },
+                        "page": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "perPage": {
+                          "type": "number",
+                          "example": 12
+                        },
+                        "totalItems": {
+                          "type": "number",
+                          "example": 5
+                        },
+                        "totalPages": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean",
+                          "example": false
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-2"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-2"
+          }
+        }
+      }
+    },
+    "/users/saved-articles/add-article": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Add article to saved list",
+        "operationId": "addArticleToSaved",
+        "description": "Add an existing article to the list of saved articles",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "articleId"
+                ],
+                "properties": {
+                  "articleId": {
+                    "description": "The ID of the article to be added to saved list",
+                    "type": "string",
+                    "example": "68498236a100312bea078fe6"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Article successfully added to saved articles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully added the article to saved!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "added",
+                        "article",
+                        "savedArticles"
+                      ],
+                      "properties": {
+                        "added": {
+                          "type": "boolean",
+                          "description": "If the article is successfully added",
+                          "example": true
+                        },
+                        "article": {
+                          "type": "object",
+                          "description": "Short article information",
+                          "required": [
+                            "_id",
+                            "img",
+                            "title",
+                            "author"
+                          ],
+                          "properties": {
+                            "_id": {
+                              "type": "string",
+                              "description": "Article ID",
+                              "example": "68498236a100312bea078fe6"
+                            },
+                            "img": {
+                              "type": "string",
+                              "format": "uri",
+                              "description": "URL of the article's image",
+                              "example": "https://ftp.goit.study/img/harmoniq/f12e886489f94b5886d03e95vn.jpg"
+                            },
+                            "title": {
+                              "type": "string",
+                              "description": "Title of the article",
+                              "example": "When anxiety fills the space: the path to calm"
+                            },
+                            "author": {
+                              "type": "string",
+                              "description": "Author's name",
+                              "example": "Анастасія Олійник"
+                            }
+                          }
+                        },
+                        "savedArticles": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "example": "68498236a100312bea078fef"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-2"
+          }
+        }
+      }
+    },
+    "/users/saved-articles/{articleId}": {
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Remove article from list of saved articles",
+        "operationId": "deleteArticle",
+        "description": "Remove saved article from the user's saved list. Returns updated list of saved article IDs or 204 if none remain",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "articleId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "68498236a100312bea078fe6"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Article removed; returning updated list of saved articles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "savedArticleIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": [
+                        "6885053253a465a2060a9d8e",
+                        "6885053253a465a2060a9d96"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No content"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-2"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-2"
+          }
+        }
+      }
+    },
+    "/users/created-articles": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get list of articles created by user",
+        "operationId": "getCreatedArticles",
+        "description": "Returns a paginated list of articles created by user",
+        "security": [],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            },
+            "description": "Page number for pagination"
+          },
+          {
+            "in": "query",
+            "name": "perPage",
+            "schema": {
+              "type": "integer",
+              "example": 12
+            },
+            "description": "Number of articles per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully found created articles!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found created articles!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "items",
+                        "page",
+                        "perPage",
+                        "totalItems",
+                        "totalPages",
+                        "hasNextPage",
+                        "hasPreviousPage"
+                      ],
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "required": [
+                              "_id",
+                              "img",
+                              "title",
+                              "author"
+                            ],
+                            "properties": {
+                              "_id": {
+                                "type": "string",
+                                "example": "68498236a100312bea078fe6"
+                              },
+                              "img": {
+                                "type": "string",
+                                "example": "https://ftp.goit.study/img/harmoniq/f12e886489f94b5886d03e95vn.jpg",
+                                "format": "uri"
+                              },
+                              "title": {
+                                "type": "string",
+                                "example": "When anxiety fills the space: the path to calm"
+                              },
+                              "author": {
+                                "type": "string",
+                                "example": "Oleksandra Bondarenko"
+                              }
+                            }
+                          }
+                        },
+                        "page": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "perPage": {
+                          "type": "number",
+                          "example": 12
+                        },
+                        "totalItems": {
+                          "type": "number",
+                          "example": 5
+                        },
+                        "totalPages": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean",
+                          "example": false
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404-2"
+          }
+        }
+      }
+    },
+    "/users/{userId}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get user by id",
+        "operationId": "getUserById",
+        "description": "Get user by their unique ID",
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "6881563901add19ee16fcff2"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved user by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found user with id 6881563901add19ee16fcff2!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "example": "John Doe"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "j.doe@mail.com"
+                        },
+                        "avatar": {
+                          "type": "string",
+                          "format": "uri",
+                          "example": "https://ftp.goit.study/img/harmoniq/users/6881563901add19ee16fcff2.web…"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
           }
         }
       }
@@ -310,8 +1339,48 @@
                       "format": "date-time",
                       "example": "2025-07-26T12:18:02.095Z",
                       "description": "User update date"
+                    },
+                    "accessToken": {
+                      "type": "string",
+                      "description": "Access token",
+                      "example": "NuB85QNMA+UUUZWUdSPZ+mRyeVIaJfAkONkajoXn"
+                    },
+                    "savedArticles": {
+                      "type": "array",
+                      "description": "List of user`s saved articles"
+                    },
+                    "articlesAmount": {
+                      "type": "integer",
+                      "description": "Number of articles added by the user",
+                      "example": 4
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Invalid input or article already saved",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "description": "HTTP status code",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "description": "Error message",
+                  "example": "Article already in saved list"
                 }
               }
             }
@@ -389,6 +1458,134 @@
                 }
               }
             }
+          }
+        }
+      },
+      "404-2": {
+        "description": "Not found error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message",
+                "data"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 404
+                },
+                "message": {
+                  "type": "string",
+                  "example": "NotFoundError"
+                },
+                "data": {
+                  "type": "object",
+                  "required": [
+                    "message"
+                  ],
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Article not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "401-2": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 401
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "article": {
+        "type": "object",
+        "required": [
+          "img",
+          "title",
+          "article",
+          "author",
+          "date"
+        ],
+        "properties": {
+          "_id": {
+            "description": "Article's id",
+            "type": "string",
+            "example": "84fs58rt61hs82gi5y8ch691"
+          },
+          "img": {
+            "description": "Link to article's image",
+            "type": "string",
+            "example": "https://res.cloudinary.com/uqwgdu/image/upload/image.png"
+          },
+          "title": {
+            "description": "Article's title",
+            "type": "string",
+            "example": "Сила тиші: як медитація лікує душу"
+          },
+          "article": {
+            "description": "Article's article",
+            "type": "string",
+            "example": "Іноді тиша мовчить голосніше за будь-які слова. У світі, сповненому шу…"
+          },
+          "rate": {
+            "description": "Article rating. Shows how many users saved the article",
+            "type": "number",
+            "example": 13,
+            "minimum": 0
+          },
+          "author": {
+            "description": "Article's author",
+            "type": "string",
+            "example": "Назар Ткаченко"
+          },
+          "ownerId": {
+            "description": "User ID that owns this article",
+            "type": "string",
+            "example": "65e4aabbccee33001122ff77"
+          },
+          "date": {
+            "description": "Date the article was created",
+            "type": "string",
+            "example": "2025-07-27"
+          },
+          "createdAt": {
+            "description": "Date the article was created",
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-07-27T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "description": "Date the article was last updated",
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-07-27T16:35:22.123Z"
           }
         }
       }
