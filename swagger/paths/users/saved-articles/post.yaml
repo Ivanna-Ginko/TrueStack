@@ -39,11 +39,26 @@ responses:
               example: 'Article added to saved articles successfully'
             data:
               type: array
+              description: List of saved article IDs after addition
               items:
                 type: string
                 example: '6885053253a465a2060a9d9f'
   '400':
-    $ref: ../../../components/responses/400.yaml
+    description: Invalid input data
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 400
+            message:
+              type: string
+              example: 'ArticleId is required'
   '401':
     $ref: ../../../components/responses/401.yaml
   '404':
