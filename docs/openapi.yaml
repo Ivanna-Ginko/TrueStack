@@ -11,8 +11,8 @@ tags:
     description: Auth operations.
   - name: Articles
     description: Article operations.
-  - name: User
-    description: User operations.
+  - name: Users
+    description: Users operations.
 servers:
   - url: http://localhost:3000
   - url: https://truestack.onrender.com
@@ -41,6 +41,10 @@ paths:
       $ref: ../swagger/paths/articles/post.yaml
     get:
       $ref: ../swagger/paths/articles/get.yaml
+
+  /users:
+    get:
+      $ref: ../swagger/paths/users/get.yaml
 
   /users/saved-articles:
     get:
