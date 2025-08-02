@@ -79,10 +79,13 @@ export const getSavedArticlesOfUserController = async (req, res, next) => {
     return res.status(404).json({ message: 'User not found' });
   }
 
+  const { items, ...pagination } = result;
+
   res.json({
     status: 200,
     message: 'Successfully found saved articles',
-    data: result,
+    data: items,
+    pagination,
   });
 };
 
@@ -104,10 +107,19 @@ export const getCreatedArticlesOfUserController = async (req, res, next) => {
     perPage,
   });
 
+  if (!result.items.length) {
+    return res
+      .status(404)
+      .json({ message: 'There are no created articles by this user' });
+  }
+
+  const { items, ...pagination } = result;
+
   res.status(200).json({
     status: 200,
     message: 'Successfully found created articles',
-    data: result,
+    data: items,
+    pagination,
   });
 };
 

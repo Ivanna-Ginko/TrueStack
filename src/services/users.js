@@ -86,7 +86,11 @@ export const getSavedArticlesOfUser = async ({
 
   const [total, items] = await Promise.all([
     ArticlesCollection.countDocuments(articlesQuery.getFilter()),
-    articlesQuery.skip(skip).limit(perPage).select('title img author').lean(),
+    articlesQuery
+      .skip(skip)
+      .limit(perPage)
+      .select('title img author article')
+      .lean(),
   ]);
 
   return {
