@@ -12,7 +12,7 @@ export const getAllUsers = async () => {
 
 export const getUserById = async (userId) => {
   const user = await UsersCollection.findById(userId).select(
-    'name email avatar',
+    'name email avatarUrl',
   );
   return user;
 };
@@ -143,7 +143,7 @@ export const getTopUsersByArticlesRating = async () => {
     {
       $project: {
         name: 1,
-        avatar: 1,
+        avatarUrl: 1,
         totalRating: 1,
       },
     },
