@@ -4,8 +4,9 @@ import {
   getSavedArticlesOfUserController,
   getCreatedArticlesOfUserController,
   getUserByIdController,
-  getUsersController,
+  getAllUsersController,
   removeArticleFromSavedController,
+  getMe,
 } from '../controllers/user.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { isValidId } from '../middlewares/isValidId.js';
@@ -16,20 +17,9 @@ import { addArticleToSavedSchema } from '../validation/articles.js';
 
 const router = Router();
 
-router.get('/', ctrlWrapper(getUsersController));
+router.get('/', ctrlWrapper(getAllUsersController));
 
-router.post(
-  '/saved-articles/add-article',
-  authenticate,
-  validateBody(addArticleToSavedSchema),
-  ctrlWrapper(addArticleToSavedController),
-);
-
-router.get(
-  '/created-articles',
-  authenticate,
-  ctrlWrapper(getCreatedArticlesOfUserController),
-);
+router.get('/me', authenticate, ctrlWrapper(getMe));
 
 router.get(
   '/saved-articles',
@@ -37,11 +27,23 @@ router.get(
   ctrlWrapper(getSavedArticlesOfUserController),
 );
 
+router.post(
+  '/saved-articles',
+  authenticate,
+  validateBody(addArticleToSavedSchema),
+  ctrlWrapper(addArticleToSavedController),
+);
+
 router.delete(
   '/saved-articles/:articleId',
   isValidIdArticles,
   authenticate,
   ctrlWrapper(removeArticleFromSavedController),
+);
+
+router.get(
+  '/:userId/created-articles',
+  ctrlWrapper(getCreatedArticlesOfUserController),
 );
 
 router.get('/:userId', isValidId, ctrlWrapper(getUserByIdController));

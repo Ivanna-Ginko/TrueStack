@@ -36,7 +36,7 @@ content:
               format: email
               example: 'john12345@gmail.com'
               description: User's email
-            avatar:
+            avatarUrl:
               type: string
               format: uri
               example: 'https://res.cloudinary.com/dgce49ndc/image/upload/v1752447915/ar3ps6z0sbxexlj7spgg'

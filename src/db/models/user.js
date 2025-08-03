@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 
+
 const UserSchema = new Schema({
   name: {
     type: String,
@@ -14,9 +15,9 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
-  avatar: {
+  avatarUrl: {
     type: String,
-    default: null,
+    default: '../../img/stub-min.png',
   },
   articlesAmount: {
     type: Number,

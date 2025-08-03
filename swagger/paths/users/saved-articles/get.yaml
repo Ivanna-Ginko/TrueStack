@@ -1,5 +1,5 @@
 tags:
-  - User
+  - Users
 summary: Get list of articles saved by current user
 operationId: getSavedArticles
 description: 'Returns a paginated list of articles saved by the currently authenticated user'
@@ -30,6 +30,7 @@ responses:
             - status
             - message
             - data
+            - pagination
           properties:
             status:
               type: integer
@@ -38,46 +39,53 @@ responses:
               type: string
               example: Successfully found saved articles!
             data:
+              type: array
+              items:
+                type: object
+                required:
+                  - _id
+                  - img
+                  - title
+                  - author
+                  - article
+                properties:
+                  _id:
+                    type: string
+                    example: '68498236a100312bea078fe6'
+                  img:
+                    type: string
+                    example: 'https://ftp.goit.study/img/harmoniq/f12e886489f94b5886d03e95vn.jpg'
+                    format: uri
+                  title:
+                    type: string
+                    example: 'When anxiety fills the space: the path to calm'
+                  author:
+                    type: string
+                    example: 'Oleksandra Bondarenko'
+                  article:
+                    type: string
+                    example: 'У кожного з нас бувають моменти, коли тривога наче туман огортає думки…'
+            pagination:
               type: object
               required:
-                - items
                 - page
                 - perPage
                 - totalItems
-                - totalPages
+                - totalPage
                 - hasNextPage
                 - hasPreviousPage
               properties:
-                items:
-                  type: array
-                  items:
-                    type: object
-                    required:
-                      - _id
-                      - img
-                      - title
-                    properties:
-                      _id:
-                        type: string
-                        example: '68498236a100312bea078fe6'
-                      img:
-                        type: string
-                        example: 'https://ftp.goit.study/img/harmoniq/f12e886489f94b5886d03e95vn.jpg'
-                        format: uri
-                      title:
-                        type: string
-                        example: 'When anxiety fills the space: the path to calm'
                 page:
-                  type: number
+                  type: integer
                   example: 1
                 perPage:
-                  type: number
+                  type: integer
                   example: 12
                 totalItems:
-                  type: number
+                  type: integer
                   example: 5
-                totalPages:
-                  type: number
+                totalPage:
+                  type: integer
                   example: 1
                 hasNextPage:
                   type: boolean

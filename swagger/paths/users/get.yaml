@@ -1,0 +1,128 @@
+tags:
+  - Users
+summary: Get all users
+operationId: getAllUsers
+description: 'Returns list of users with pagination and sorting options.
+  Default sorting is by popularity (totalRate).
+  Available sort options: `popularity`, `name`, `articlesAmount`.'
+security: []
+parameters:
+  - in: query
+    name: page
+    schema:
+      type: integer
+      default: 1
+      minimum: 1
+      example: 1
+    description: 'Page number for pagination'
+  - in: query
+    name: perPage
+    schema:
+      type: integer
+      default: 20
+      minimum: 1
+      example: 6
+    description: 'Number of users per page'
+  - in: query
+    name: sortBy
+    schema:
+      type: string
+      enum: [popularity, name, articlesAmount]
+      default: popularity
+      example: 'popularity'
+    description: 'Field by which to sort users'
+responses:
+  '200':
+    description: Successfully found users
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+            - pagination
+            - meta
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully found users
+            data:
+              type: array
+              items:
+                type: object
+                required:
+                  - _id
+                  - name
+                  - avatarUrl
+                  - articlesAmount
+                  - totalRate
+                properties:
+                  _id:
+                    type: string
+                    example: '68498236a100312bea078fe6'
+                  name:
+                    type: string
+                    example: John Doe
+                  avatarUrl:
+                    type: string
+                    format: uri
+                    example: https://example.com/avatar.jpg
+                  articlesAmount:
+                    type: integer
+                    example: 5
+                  totalRate:
+                    type: number
+                    example: 24
+            pagination:
+              type: object
+              required:
+                - page
+                - perPage
+                - totalItems
+                - totalPage
+                - hasPreviousPage
+                - hasNextPage
+              properties:
+                page:
+                  type: integer
+                  example: 1
+                perPage:
+                  type: integer
+                  example: 20
+                totalItems:
+                  type: integer
+                  example: 104
+                totalPage:
+                  type: integer
+                  example: 6
+                hasPreviousPage:
+                  type: boolean
+                  example: false
+                hasNextPage:
+                  type: boolean
+                  example: true
+            meta:
+              type: object
+              required:
+                - sortBy
+                - sortOptions
+                - defaultSort
+              properties:
+                sortBy:
+                  type: string
+                  example: popularity
+                sortOptions:
+                  type: array
+                  items:
+                    type: string
+                  example: [popularity, name, articlesAmount]
+                defaultSort:
+                  type: string
+                  example: popularity
+  '400':
+    $ref: ../../components/responses/user/400.yaml

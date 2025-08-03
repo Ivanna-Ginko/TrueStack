@@ -16,7 +16,7 @@ properties:
     description: "User's email"
     type: string
     example: 'johndoe@example.com'
-  avatar:
+  avatarUrl:
     description: "User's photo URL"
     type: string
     example: 'https://example.com/avatar.jpg'

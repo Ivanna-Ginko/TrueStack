@@ -1,0 +1,55 @@
+tags:
+  - Users
+summary: Get user by ID
+operationId: getUserById
+description: 'Returns basic info about user by their unique ID'
+security: []
+parameters:
+  - in: path
+    name: userId
+    required: true
+    description: Unique identifier of the user
+    schema:
+      type: string
+      example: '6881563901add19ee16fcff2'
+responses:
+  '200':
+    description: 'Successfully retrieved user by ID'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: 'Successfully found user with id 6881563901add19ee16fcff2!'
+            data:
+              type: object
+              required:
+                - _id
+                - name
+                - email
+                - avatarUrl
+              properties:
+                _id:
+                  type: string
+                  example: '688bdb08d727567cd45df13e'
+                name:
+                  type: string
+                  example: 'John Doe'
+                email:
+                  type: string
+                  example: 'j.doe@mail.com'
+                avatarUrl:
+                  type: string
+                  format: uri
+                  example: 'https://ftp.goit.study/img/harmoniq/users/6881563901add19ee16fcff2.web…'
+  '404':
+    $ref: ../../../components/responses/user/404.yaml
