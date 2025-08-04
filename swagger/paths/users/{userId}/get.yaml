@@ -52,4 +52,4 @@ responses:
                   format: uri
                   example: 'https://ftp.goit.study/img/harmoniq/users/6881563901add19ee16fcff2.web…'
   '404':
-    $ref: ../../../components/responses/user/404.yaml
+    $ref: ../../../components/responses/user/404UserNotFound.yaml
