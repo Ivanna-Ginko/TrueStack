@@ -1,27 +1,32 @@
 tags:
   - Users
-summary: Get list of articles saved by current user
-operationId: getSavedArticles
-description: 'Returns a paginated list of articles saved by the currently authenticated user'
-security:
-  - bearerAuth: []
-
+summary: Get list of articles created by a specific user
+operationId: getCreatedArticles
+description: 'Returns a paginated list of articles created by a specific user'
+security: []
 parameters:
+  - in: path
+    name: userId
+    required: true
+    description: 'ID of a specific user'
+    schema:
+      type: string
+      example: '6885053253a465a2060a9d78'
   - in: query
     name: page
+    description: 'Page number for pagination'
     schema:
       type: integer
       example: 1
-    description: 'Page number for pagination'
   - in: query
     name: perPage
+    description: 'Number of articles per page'
     schema:
       type: integer
       example: 12
-    description: 'Number of articles per page'
 responses:
   '200':
-    description: Successfully found saved articles!
+    description: Successfully found created articles!
     content:
       application/json:
         schema:
@@ -37,9 +42,10 @@ responses:
               example: 200
             message:
               type: string
-              example: Successfully found saved articles!
+              example: Successfully found created articles
             data:
               type: array
+              minItems: 0
               items:
                 type: object
                 required:
@@ -47,7 +53,6 @@ responses:
                   - img
                   - title
                   - author
-                  - article
                 properties:
                   _id:
                     type: string
@@ -62,9 +67,6 @@ responses:
                   author:
                     type: string
                     example: 'Oleksandra Bondarenko'
-                  article:
-                    type: string
-                    example: 'У кожного з нас бувають моменти, коли тривога наче туман огортає думки…'
             pagination:
               type: object
               required:
@@ -83,7 +85,7 @@ responses:
                   example: 12
                 totalItems:
                   type: integer
-                  example: 5
+                  example: 1
                 totalPage:
                   type: integer
                   example: 1
@@ -93,7 +95,7 @@ responses:
                 hasPreviousPage:
                   type: boolean
                   example: false
-  '401':
-    $ref: ../../../components/responses/user/401Unathorized.yaml
+  '400':
+    $ref: ../../../../components/responses/user/400.yaml
   '404':
-    $ref: '../../../components/responses/404.yaml'
+    $ref: ../../../../components/responses/404.yaml
