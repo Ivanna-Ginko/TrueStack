@@ -16,8 +16,9 @@ const router = Router();
 
 router.post(
   '/register',
-  validateBody(registerUserSchema),
   addAvatar,
+  validateBody(registerUserSchema),
+
   ctrlWrapper(registerUserController),
 );
 
