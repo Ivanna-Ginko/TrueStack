@@ -16,12 +16,12 @@ const UserSchema = new Schema({
   },
   avatarUrl: {
     type: String,
-    default: 'https://res.cloudinary.com/dfmjc0a2f/image/upload/v1754506178/lzd27eu1hoivhtnohcdd.png',
-
+    default:
+      'https://res.cloudinary.com/dfmjc0a2f/image/upload/v1754506178/lzd27eu1hoivhtnohcdd.png',
   },
   articlesAmount: {
     type: Number,
-    default: null,
+    // default: null,
   },
   savedArticles: [
     {
