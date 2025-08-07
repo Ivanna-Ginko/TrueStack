@@ -9,6 +9,7 @@ export const getAllUsers = async ({
   page = 1,
   perPage = 20,
   sortBy = 'popularity',
+  filters = {},
 }) => {
   const skip = (page - 1) * perPage;
 
@@ -20,7 +21,7 @@ export const getAllUsers = async ({
 
   const sortOptions = sortFieldsMap[sortBy] || sortFieldsMap.popularity;
 
-  const aggregationPipeline = [
+  const basePipeline = [
     {
       $lookup: {
         from: 'articles',
@@ -31,39 +32,64 @@ export const getAllUsers = async ({
     },
     {
       $addFields: {
-        totalRate: { $sum: '$articles.rate' },
+        totalRate: { $ifNull: [{ $sum: '$articles.rate' }, 0] },
         articlesAmount: { $size: '$articles' },
       },
     },
+  ];
+
+  const matchConditions = [];
+  if (filters.hasArticles) {
+    matchConditions.push({ articlesAmount: { $gt: 0 } });
+  }
+  if (filters.hasRating) {
+    matchConditions.push({ totalRate: { $gt: 0 } });
+  }
+
+  if (matchConditions.length > 0) {
+    basePipeline.push({
+      $match: { $and: matchConditions },
+    });
+  }
+
+  const aggregationPipeline = [
+    ...basePipeline,
     {
-      $match: {
-        articlesAmount: { $gt: 0 },
+      $facet: {
+        data: [
+          {
+            $project: {
+              name: 1,
+              avatarUrl: 1,
+              articlesAmount: 1,
+              totalRate: 1,
+            },
+          },
+          { $sort: sortOptions },
+          { $skip: skip },
+          { $limit: perPage },
+        ],
+        totalCount: [{ $count: 'count' }],
       },
     },
     {
       $project: {
-        name: 1,
-        avatarUrl: 1,
-        articlesAmount: 1,
-        totalRate: { $ifNull: ['$totalRate', 0] },
+        users: '$data',
+        totalUsersCount: {
+          $cond: {
+            if: { $gt: [{ $size: '$totalCount' }, 0] },
+            then: { $arrayElemAt: ['$totalCount.count', 0] },
+            else: 0,
+          },
+        },
       },
-    },
-    {
-      $sort: sortOptions,
-    },
-    {
-      $skip: skip,
-    },
-    {
-      $limit: perPage,
     },
   ];
 
-  const users = await UsersCollection.aggregate(aggregationPipeline);
+  const result = await UsersCollection.aggregate(aggregationPipeline);
+  const final = result[0] || { users: [], totalUsersCount: 0 };
 
-  const totalUsersCount = await UsersCollection.countDocuments();
-
-  return { users, totalUsersCount };
+  return final;
 };
 
 export const getUserById = async (userId) => {
