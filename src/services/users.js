@@ -32,6 +32,12 @@ export const getAllUsers = async ({
     {
       $addFields: {
         totalRate: { $sum: '$articles.rate' },
+        articlesAmount: { $size: '$articles' },
+      },
+    },
+    {
+      $match: {
+        articlesAmount: { $gt: 0 },
       },
     },
     {
