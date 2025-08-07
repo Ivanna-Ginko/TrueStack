@@ -19,10 +19,19 @@ export const getAllUsersController = async (req, res, next) => {
 
   const sortBy = req.query.sortBy || 'popularity';
 
+  const filters = {};
+  if ('hasArticle' in req.query) {
+    filters.hasArticles = req.query.hasArticle === 'true';
+  }
+  if ('hasRating' in req.query) {
+    filters.hasRating = req.query.hasRating === 'true';
+  }
+
   const { users, totalUsersCount } = await getAllUsers({
     page,
     perPage,
     sortBy,
+    filters,
   });
 
   const pagination = calculatePaginationData(totalUsersCount, perPage, page);
@@ -36,6 +45,7 @@ export const getAllUsersController = async (req, res, next) => {
       sortBy,
       sortOptions: ['popularity', 'name', 'articlesAmount'],
       defaultSort: 'popularity',
+      appliedFilters: filters,
     },
   });
 };
