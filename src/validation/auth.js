@@ -1,5 +1,8 @@
 import Joi from 'joi';
 
+// const pattern =
+//   /^[a-z0-9]+(?:[.-_'+][a-z0-9]+)*@([a-z0-9]+(?:[-][a-z0-9]+)*.)+[a-z]{2,}$/;
+
 export const registerUserSchema = Joi.object({
   name: Joi.string().min(3).max(32).trim().required(),
   email: Joi.string().email().max(64).trim().required(),
