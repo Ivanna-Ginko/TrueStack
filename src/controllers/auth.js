@@ -20,9 +20,10 @@ export const registerUserController = async (req, res) => {
   const avatar = req.file;
 
   const avatarUrl = avatar ? await saveFileToCloudinary(avatar) : null;
+
   await registerUser({
     ...req.body,
-    avatar: avatarUrl,
+    ...(avatarUrl && { avatarUrl }),
   });
 
   const { user: loggedInUser, session } = await loginUser({

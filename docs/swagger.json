@@ -197,7 +197,7 @@
             "$ref": "#/components/responses/401"
           },
           "404": {
-            "$ref": "#/components/responses/404"
+            "$ref": "#/components/responses/404UserNotFound"
           }
         }
       }
@@ -368,7 +368,7 @@
             }
           },
           "404": {
-            "$ref": "#/components/responses/404-2"
+            "$ref": "#/components/responses/404"
           }
         }
       },
@@ -472,7 +472,7 @@
             "$ref": "#/components/responses/401"
           },
           "404": {
-            "$ref": "#/components/responses/404-2"
+            "$ref": "#/components/responses/404"
           }
         }
       },
@@ -507,7 +507,7 @@
             "$ref": "#/components/responses/401"
           },
           "404": {
-            "$ref": "#/components/responses/404-2"
+            "$ref": "#/components/responses/404"
           }
         }
       }
@@ -737,7 +737,7 @@
             }
           },
           "404": {
-            "$ref": "#/components/responses/404-2"
+            "$ref": "#/components/responses/404"
           }
         }
       }
@@ -1060,10 +1060,10 @@
             }
           },
           "401": {
-            "$ref": "#/components/responses/401-2"
+            "$ref": "#/components/responses/401Unathorized"
           },
           "404": {
-            "$ref": "#/components/responses/404-2"
+            "$ref": "#/components/responses/404"
           }
         }
       },
@@ -1161,7 +1161,7 @@
             "$ref": "#/components/responses/401"
           },
           "404": {
-            "$ref": "#/components/responses/404-2"
+            "$ref": "#/components/responses/404"
           },
           "409": {
             "$ref": "#/components/responses/409"
@@ -1232,10 +1232,10 @@
             "description": "No content (no saved articles left)"
           },
           "401": {
-            "$ref": "#/components/responses/401-2"
+            "$ref": "#/components/responses/401Unathorized"
           },
           "404": {
-            "$ref": "#/components/responses/404-2"
+            "$ref": "#/components/responses/404"
           }
         }
       }
@@ -1316,7 +1316,9 @@
             }
           },
           "404": {
+
             "$ref": "#/components/responses/404"
+
           }
         }
       }
@@ -1670,7 +1672,7 @@
         }
       },
       "400": {
-        "description": "Bad request – invalid query parameters",
+        "description": "Bad request - invalid query parameters",
         "content": {
           "application/json": {
             "schema": {
@@ -1731,67 +1733,6 @@
         }
       },
       "404": {
-        "description": "NotFound",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "required": [
-                "status",
-                "message",
-                "error"
-              ],
-              "properties": {
-                "status": {
-                  "type": "integer",
-                  "example": 404
-                },
-                "message": {
-                  "type": "string",
-                  "example": "User not found"
-                },
-                "error": {
-                  "type": "object",
-                  "required": [
-                    "message"
-                  ],
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "User not found"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "409": {
-        "description": "Conflict - article already saved",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "required": [
-                "status",
-                "message"
-              ],
-              "properties": {
-                "status": {
-                  "type": "integer",
-                  "example": 409
-                },
-                "message": {
-                  "type": "string",
-                  "example": "Article is already in saved articles"
-                }
-              }
-            }
-          }
-        }
-      },
-      "404-2": {
         "description": "Not found error",
         "content": {
           "application/json": {
@@ -1828,7 +1769,68 @@
           }
         }
       },
-      "401-2": {
+      "409": {
+        "description": "Conflict - article already saved",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 409
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Article is already in saved articles"
+                }
+              }
+            }
+          }
+        }
+      },
+      "404UserNotFound": {
+        "description": "NotFound",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message",
+                "error"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 404
+                },
+                "message": {
+                  "type": "string",
+                  "example": "User not found"
+                },
+                "error": {
+                  "type": "object",
+                  "required": [
+                    "message"
+                  ],
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "401Unathorized": {
         "description": "Unauthorized",
         "content": {
           "application/json": {

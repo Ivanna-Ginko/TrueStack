@@ -31,12 +31,14 @@ export const startServer = () => {
     }),
   );
 
+  app.use(express.static('public'));
+
   app.get('/', (req, res) => {
     res.json({
       message: 'Hello world!',
     });
   });
-  
+
   app.use('/uploads', express.static(UPLOAD_DIR));
 
   app.use('/api-docs', swaggerDocs());
